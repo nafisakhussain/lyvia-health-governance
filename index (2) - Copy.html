@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Governance Hub | Lyvia Health</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --lh-teal:        #1A6B6B;
+      --lh-teal-dark:   #124E4E;
+      --lh-teal-light:  #E8F4F4;
+      --lh-gold:        #C9973A;
+      --lh-gold-light:  #FDF3E3;
+      --lh-charcoal:    #2C2C2C;
+      --lh-mid-grey:    #6B7280;
+      --lh-light-grey:  #F3F4F6;
+      --lh-white:       #FFFFFF;
+      --lh-danger:      #B91C1C;
+      --lh-amber:       #D97706;
+      --lh-green:       #15803D;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--lh-light-grey);
+      color: var(--lh-charcoal);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      background: var(--lh-teal-dark);
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 66px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+
+    .lh-logo {
+      display: flex; align-items: center; gap: 0.8rem;
+      text-decoration: none;
+    }
+    .lh-logo__mark {
+      width: 38px; height: 38px;
+      background: var(--lh-gold);
+      color: var(--lh-teal-dark);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 600;
+      flex-shrink: 0;
+    }
+    .lh-logo__text { display: flex; flex-direction: column; }
+    .lh-logo__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 600;
+      color: var(--lh-white); line-height: 1.1;
+    }
+    .lh-logo__sub {
+      font-size: 0.63rem; color: rgba(255,255,255,0.55);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    .nav-center {
+      display: flex; align-items: center; gap: 0.2rem;
+    }
+    .nav-center a {
+      color: rgba(255,255,255,0.75); text-decoration: none;
+      padding: 0.45rem 0.9rem; border-radius: 5px;
+      font-size: 0.84rem; font-weight: 500;
+      transition: all 0.15s;
+      letter-spacing: 0.01em;
+    }
+    .nav-center a:hover { background: rgba(255,255,255,0.1); color: var(--lh-white); }
+    .nav-center a.active {
+      color: var(--lh-white);
+      border-bottom: 2px solid var(--lh-gold);
+      padding-bottom: calc(0.45rem - 2px);
+    }
+
+    .cqc-badge {
+      background: rgba(232,244,244,0.15);
+      color: rgba(255,255,255,0.9);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      font-size: 0.67rem; font-weight: 600;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 5px 11px; white-space: nowrap;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(140deg, var(--lh-teal-dark) 0%, var(--lh-teal) 60%, #2A8A7A 100%);
+      color: var(--lh-white);
+      padding: 3.5rem 2.5rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -80px; right: 120px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(201,151,58,0.1);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      font-size: 0.75rem; font-weight: 500;
+      padding: 4px 12px;
+      margin-bottom: 1rem;
+      letter-spacing: 0.04em;
+    }
+    .hero-tag .dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #4ADE80;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 600;
+      line-height: 1.15; margin-bottom: 0.6rem;
+    }
+    .hero h1 em { font-style: italic; color: var(--lh-gold); }
+    .hero-sub {
+      font-size: 1rem; opacity: 0.85; font-weight: 300;
+      max-width: 560px; line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+    .hero-meta {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column;
+    }
+    .hero-meta-item span:first-child {
+      font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.1em; opacity: 0.6;
+    }
+    .hero-meta-item span:last-child {
+      font-size: 0.9rem; font-weight: 500; margin-top: 2px;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 1200px; width: 100%;
+      margin: 0 auto;
+      padding: 2rem 2.5rem;
+    }
+
+    /* ── STAT CARDS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--lh-white);
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      padding: 1.25rem 1.4rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .stat-card.teal::before    { background: var(--lh-teal); }
+    .stat-card.gold::before    { background: var(--lh-gold); }
+    .stat-card.green::before   { background: var(--lh-green); }
+    .stat-card.charcoal::before { background: var(--lh-charcoal); }
+
+    .stat-icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.75rem;
+    }
+    .stat-icon.teal    { background: var(--lh-teal-light); color: var(--lh-teal); }
+    .stat-icon.gold    { background: var(--lh-gold-light); color: var(--lh-gold); }
+    .stat-icon.green   { background: #DCFCE7; color: var(--lh-green); }
+    .stat-icon.charcoal { background: #F1F1F1; color: var(--lh-charcoal); }
+
+    .stat-label {
+      font-size: 0.72rem; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--lh-mid-grey);
+      margin-bottom: 0.25rem;
+    }
+    .stat-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.1rem; font-weight: 600;
+      line-height: 1; margin-bottom: 0.2rem;
+    }
+    .stat-card.teal .stat-value    { color: var(--lh-teal); }
+    .stat-card.gold .stat-value    { color: var(--lh-gold); }
+    .stat-card.green .stat-value   { color: var(--lh-green); }
+    .stat-card.charcoal .stat-value { color: var(--lh-charcoal); }
+    .stat-sub { font-size: 0.78rem; color: var(--lh-mid-grey); }
+
+    /* ── TWO-COL LAYOUT ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ── SECTION CARDS ── */
+    .section-card {
+      background: var(--lh-white);
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+    .section-card__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.4rem;
+      border-bottom: 1px solid var(--lh-light-grey);
+    }
+    .section-card__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 600;
+      color: var(--lh-teal-dark);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .section-card__body { padding: 1.4rem; }
+    .view-all {
+      font-size: 0.78rem; color: var(--lh-teal);
+      text-decoration: none; font-weight: 500;
+      display: flex; align-items: center; gap: 0.25rem;
+    }
+    .view-all:hover { text-decoration: underline; }
+
+    /* ── GOVERNANCE AREAS GRID ── */
+    .areas-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .area-card {
+      background: var(--lh-white);
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.07);
+      padding: 1.3rem 1.4rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      text-decoration: none;
+      color: inherit;
+      display: flex; align-items: flex-start; gap: 1rem;
+      transition: all 0.2s;
+    }
+    .area-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      border-color: var(--lh-teal);
+      transform: translateY(-1px);
+    }
+    .area-card__icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .area-card__content { flex: 1; }
+    .area-card__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--lh-teal-dark); margin-bottom: 0.25rem;
+    }
+    .area-card__desc { font-size: 0.82rem; color: var(--lh-mid-grey); line-height: 1.5; }
+    .area-card__footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 0.75rem;
+    }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-list { list-style: none; }
+    .activity-item {
+      display: flex; gap: 0.85rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--lh-light-grey);
+    }
+    .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .activity-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0; margin-top: 6px;
+    }
+    .activity-dot.teal   { background: var(--lh-teal); }
+    .activity-dot.gold   { background: var(--lh-gold); }
+    .activity-dot.green  { background: var(--lh-green); }
+    .activity-text { font-size: 0.85rem; line-height: 1.5; }
+    .activity-date { font-size: 0.75rem; color: var(--lh-mid-grey); margin-top: 1px; }
+
+    /* ── CONTACTS ── */
+    .contacts-stack { display: flex; flex-direction: column; gap: 0.85rem; }
+    .contact-card {
+      padding: 1rem 1.15rem;
+      border-radius: 8px;
+      border-left: 3px solid;
+    }
+    .contact-card.teal-accent   { background: var(--lh-teal-light); border-color: var(--lh-teal); }
+    .contact-card.gold-accent   { background: var(--lh-gold-light); border-color: var(--lh-gold); }
+    .contact-card__name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+    .contact-card__roles { font-size: 0.78rem; color: var(--lh-mid-grey); line-height: 1.6; }
+    .contact-card__role-tag {
+      display: inline-block;
+      background: var(--lh-white);
+      border-radius: 3px;
+      padding: 1px 7px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-right: 4px; margin-top: 4px;
+      color: var(--lh-teal-dark);
+      border: 1px solid rgba(26,107,107,0.2);
+    }
+
+    /* ── RAG BADGES ── */
+    .rag {
+      display: inline-block; padding: 2px 10px;
+      border-radius: 12px; font-size: 0.73rem; font-weight: 600;
+    }
+    .rag-green  { background: #DCFCE7; color: var(--lh-green); }
+    .rag-amber  { background: #FEF3C7; color: var(--lh-amber); }
+    .rag-red    { background: #FEE2E2; color: var(--lh-danger); }
+
+    /* ── COMPLIANCE OVERVIEW ── */
+    .compliance-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--lh-light-grey);
+      font-size: 0.85rem;
+    }
+    .compliance-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .compliance-label { color: var(--lh-charcoal); }
+    .compliance-note { font-size: 0.75rem; color: var(--lh-mid-grey); margin-top: 1px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--lh-charcoal);
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      font-size: 0.74rem;
+      padding: 1.1rem 2.5rem;
+      margin-top: auto;
+      letter-spacing: 0.02em;
+    }
+    footer strong { color: rgba(255,255,255,0.75); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .areas-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+      .nav-center { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="lh-logo" aria-label="Lyvia Health Governance Hub home">
+      <div class="lh-logo__mark" aria-hidden="true">L</div>
+      <div class="lh-logo__text">
+        <span class="lh-logo__name">Lyvia Health</span>
+        <span class="lh-logo__sub">Governance Hub</span>
+      </div>
+    </a>
+
+    <div class="nav-center">
+      <a href="index.html" class="active">Home</a>
+      <a href="policies.html">Policies</a>
+      <a href="formulary.html">Formulary</a>
+      <a href="meetings.html">Meeting Logs</a>
+      <a href="contacts.html">Contacts</a>
+    </div>
+
+    <span class="cqc-badge" aria-label="CQC Registration Status">CQC Registration In Progress</span>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <header class="hero" role="banner">
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <span class="dot" aria-hidden="true"></span>
+        Clinical Governance Framework — Active
+      </div>
+      <h1>Lyvia Health Ltd<br><em>Governance Hub</em></h1>
+      <p class="hero-sub">
+        CQC-compliant clinical governance for a digital private dermatology service.
+        Adults 18+ · Private prescriptions only · Powered by Semble.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span>Service Type</span>
+          <span>Digital Private Dermatology</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>Registration</span>
+          <span>CQC — In Progress</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>Clinical Platform</span>
+          <span>Semble</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>Patient Scope</span>
+          <span>Adults 18+ Only</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN ── -->
+  <main>
+
+    <!-- STAT CARDS -->
+    <section aria-label="Governance statistics" style="margin-bottom:2rem;">
+      <div class="stats-grid">
+        <div class="stat-card teal">
+          <div class="stat-icon teal" aria-hidden="true">
+            <i data-lucide="file-text" style="width:18px;height:18px;"></i>
+          </div>
+          <div class="stat-label">Total Policies</div>
+          <div class="stat-value">42</div>
+          <div class="stat-sub">Across 7 series</div>
+        </div>
+
+        <div class="stat-card green">
+          <div class="stat-icon green" aria-hidden="true">
+            <i data-lucide="shield-check" style="width:18px;height:18px;"></i>
+          </div>
+          <div class="stat-label">Policies Current</div>
+          <div class="stat-value">42</div>
+          <div class="stat-sub">All up to date</div>
+        </div>
+
+        <div class="stat-card gold">
+          <div class="stat-icon gold" aria-hidden="true">
+            <i data-lucide="calendar" style="width:18px;height:18px;"></i>
+          </div>
+          <div class="stat-label">Next Review Due</div>
+          <div class="stat-value" style="font-size:1.4rem;margin-top:4px;">Mar 2027</div>
+          <div class="stat-sub">Annual policy review</div>
+        </div>
+
+        <div class="stat-card charcoal">
+          <div class="stat-icon charcoal" aria-hidden="true">
+            <i data-lucide="users" style="width:18px;height:18px;"></i>
+          </div>
+          <div class="stat-label">Active Clinicians</div>
+          <div class="stat-value">2</div>
+          <div class="stat-sub">Both trained &amp; compliant</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GOVERNANCE AREAS -->
+    <section aria-labelledby="areas-heading" style="margin-bottom:2rem;">
+      <h2 id="areas-heading" style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--lh-teal-dark);margin-bottom:1rem;">
+        Governance Areas
+      </h2>
+      <div class="areas-grid">
+
+        <a href="policies.html" class="area-card">
+          <div class="area-card__icon" style="background:var(--lh-teal-light);color:var(--lh-teal);">
+            <i data-lucide="file-text" style="width:22px;height:22px;" aria-hidden="true"></i>
+          </div>
+          <div class="area-card__content">
+            <div class="area-card__title">Policy Register</div>
+            <div class="area-card__desc">42 controlled policy documents across CQS, DP, OPT, OP, LH, LH-DPIA, and LH-FM series.</div>
+            <div class="area-card__footer">
+              <span class="rag rag-green">All Current</span>
+              <span style="font-size:0.78rem;color:var(--lh-teal);font-weight:500;">View Register →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="formulary.html" class="area-card">
+          <div class="area-card__icon" style="background:var(--lh-gold-light);color:var(--lh-gold);">
+            <i data-lucide="pill" style="width:22px;height:22px;" aria-hidden="true"></i>
+          </div>
+          <div class="area-card__content">
+            <div class="area-card__title">Medicines Formulary</div>
+            <div class="area-card__desc">Approved dermatology treatments aligned to NICE and BAD guidelines. Private prescriptions only.</div>
+            <div class="area-card__footer">
+              <span style="font-size:0.78rem;background:#FEF3C7;color:var(--lh-amber);padding:2px 9px;border-radius:10px;font-weight:600;">No CDs · No Isotretinoin</span>
+              <span style="font-size:0.78rem;color:var(--lh-teal);font-weight:500;">View Formulary →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="meetings.html" class="area-card">
+          <div class="area-card__icon" style="background:#EDE9FE;color:#6D28D9;">
+            <i data-lucide="clipboard-list" style="width:22px;height:22px;" aria-hidden="true"></i>
+          </div>
+          <div class="area-card__content">
+            <div class="area-card__title">Governance Meetings</div>
+            <div class="area-card__desc">Clinical governance, safeguarding, and information governance meeting records and action logs.</div>
+            <div class="area-card__footer">
+              <span class="rag rag-green">Meetings Up to Date</span>
+              <span style="font-size:0.78rem;color:var(--lh-teal);font-weight:500;">View Logs →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="contacts.html" class="area-card">
+          <div class="area-card__icon" style="background:#FCE7F3;color:#9D174D;">
+            <i data-lucide="user-check" style="width:22px;height:22px;" aria-hidden="true"></i>
+          </div>
+          <div class="area-card__content">
+            <div class="area-card__title">Key Roles &amp; Contacts</div>
+            <div class="area-card__desc">Nominated Individual, Registered Manager, SIRO, Safeguarding Lead, IG Lead, and Caldicott Guardian.</div>
+            <div class="area-card__footer">
+              <span style="font-size:0.78rem;color:var(--lh-mid-grey);">2 directors · External DPO</span>
+              <span style="font-size:0.78rem;color:var(--lh-teal);font-weight:500;">View Contacts →</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- TWO-COL: ACTIVITY + CONTACTS / COMPLIANCE -->
+    <div class="two-col">
+
+      <!-- LEFT: RECENT ACTIVITY + COMPLIANCE -->
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+        <!-- RECENT ACTIVITY -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <i data-lucide="activity" style="width:16px;height:16px;color:var(--lh-teal);" aria-hidden="true"></i>
+              Recent Governance Activity
+            </div>
+          </div>
+          <div class="section-card__body">
+            <ul class="activity-list" aria-label="Recent governance activity">
+              <li class="activity-item">
+                <span class="activity-dot teal" aria-hidden="true"></span>
+                <div>
+                  <div class="activity-text"><strong>Policy suite completed</strong> — 42 controlled documents across 7 series authored and version-controlled.</div>
+                  <div class="activity-date">March 2025</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot gold" aria-hidden="true"></span>
+                <div>
+                  <div class="activity-text"><strong>Medicines formulary finalised</strong> — LH-FM-001 published covering acne, rosacea, eczema, psoriasis, and seborrhoeic dermatitis.</div>
+                  <div class="activity-date">March 2025</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot green" aria-hidden="true"></span>
+                <div>
+                  <div class="activity-text"><strong>5 DPIAs completed</strong> — Semble, Google Workspace, Clinical Photography, Remote Identity Verification, and Patient Registration.</div>
+                  <div class="activity-date">March 2025</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot teal" aria-hidden="true"></span>
+                <div>
+                  <div class="activity-text"><strong>Training matrix confirmed</strong> — Both clinicians hold identical full training records. All mandatory modules complete.</div>
+                  <div class="activity-date">March 2025</div>
+                </div>
+              </li>
+              <li class="activity-item">
+                <span class="activity-dot gold" aria-hidden="true"></span>
+                <div>
+                  <div class="activity-text"><strong>Governance hub launched</strong> — CQC governance hub published to GitHub Pages.</div>
+                  <div class="activity-date">March 2025</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- COMPLIANCE OVERVIEW -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <i data-lucide="shield" style="width:16px;height:16px;color:var(--lh-teal);" aria-hidden="true"></i>
+              Compliance Overview
+            </div>
+          </div>
+          <div class="section-card__body">
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">CQC Registration</div>
+                <div class="compliance-note">Application in progress</div>
+              </div>
+              <span class="rag rag-amber">In Progress</span>
+            </div>
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">Policy Framework</div>
+                <div class="compliance-note">42 documents — all series current</div>
+              </div>
+              <span class="rag rag-green">Complete</span>
+            </div>
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">Data Protection (UK GDPR)</div>
+                <div class="compliance-note">5 DPIAs · External DPO appointed</div>
+              </div>
+              <span class="rag rag-green">Complete</span>
+            </div>
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">Safeguarding</div>
+                <div class="compliance-note">Adults-only service · Lead appointed</div>
+              </div>
+              <span class="rag rag-green">Complete</span>
+            </div>
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">Medicines Governance</div>
+                <div class="compliance-note">Formulary aligned to NICE &amp; BAD</div>
+              </div>
+              <span class="rag rag-green">Complete</span>
+            </div>
+            <div class="compliance-row">
+              <div>
+                <div class="compliance-label">Staff Training</div>
+                <div class="compliance-note">Both clinicians — all modules complete</div>
+              </div>
+              <span class="rag rag-green">Complete</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: KEY CONTACTS + SERVICE INFO -->
+      <div style="display:flex;flex-direction:column;gap:1.5rem;">
+
+        <!-- KEY CONTACTS -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <i data-lucide="users" style="width:16px;height:16px;color:var(--lh-teal);" aria-hidden="true"></i>
+              Key Personnel
+            </div>
+            <a href="contacts.html" class="view-all">
+              All contacts <i data-lucide="chevron-right" style="width:13px;height:13px;" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div class="section-card__body">
+            <div class="contacts-stack">
+              <div class="contact-card teal-accent">
+                <div class="contact-card__name">Dr Nafisa Khatoon Hussain</div>
+                <div style="margin-top:0.4rem;">
+                  <span class="contact-card__role-tag">Nominated Individual</span>
+                  <span class="contact-card__role-tag">SIRO</span>
+                  <span class="contact-card__role-tag">Safeguarding Lead</span>
+                </div>
+              </div>
+              <div class="contact-card gold-accent">
+                <div class="contact-card__name">Dr Mahreen Khan</div>
+                <div style="margin-top:0.4rem;">
+                  <span class="contact-card__role-tag" style="color:var(--lh-gold);border-color:rgba(201,151,58,0.3);">Registered Manager</span>
+                  <span class="contact-card__role-tag" style="color:var(--lh-gold);border-color:rgba(201,151,58,0.3);">IG Lead</span>
+                  <span class="contact-card__role-tag" style="color:var(--lh-gold);border-color:rgba(201,151,58,0.3);">Caldicott Guardian</span>
+                </div>
+              </div>
+              <div style="padding:0.9rem 1.1rem;background:var(--lh-light-grey);border-radius:8px;border:1px solid rgba(0,0,0,0.06);">
+                <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.07em;color:var(--lh-mid-grey);margin-bottom:0.3rem;">Data Protection Officer</div>
+                <div style="font-weight:500;font-size:0.88rem;">Clinical DPO (External)</div>
+                <div style="font-size:0.78rem;color:var(--lh-mid-grey);">Hornbeam Business Park, Harrogate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICE INFORMATION -->
+        <div class="section-card">
+          <div class="section-card__header">
+            <div class="section-card__title">
+              <i data-lucide="info" style="width:16px;height:16px;color:var(--lh-teal);" aria-hidden="true"></i>
+              Service Information
+            </div>
+          </div>
+          <div class="section-card__body">
+            <dl style="font-size:0.84rem;display:flex;flex-direction:column;gap:0.7rem;">
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Service Name</dt>
+                <dd style="font-weight:500;text-align:right;">Lyvia Health Ltd</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Service Type</dt>
+                <dd style="font-weight:500;">Digital Dermatology</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Delivery Model</dt>
+                <dd style="font-weight:500;">Remote / Online Only</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Clinical Platform</dt>
+                <dd style="font-weight:500;">Semble</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Prescribing</dt>
+                <dd style="font-weight:500;text-align:right;">Private only · No FP10/EPS</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding-bottom:0.65rem;border-bottom:1px solid var(--lh-light-grey);">
+                <dt style="color:var(--lh-mid-grey);">Patient Scope</dt>
+                <dd style="font-weight:500;">Adults 18+ only</dd>
+              </div>
+              <div style="display:flex;justify-content:space-between;">
+                <dt style="color:var(--lh-mid-grey);">Urgent Pathway</dt>
+                <dd style="font-weight:500;text-align:right;max-width:200px;line-height:1.4;">Same-day advice + GP 2WW letter</dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer role="contentinfo">
+    <strong>Lyvia Health Ltd</strong> &nbsp;·&nbsp; Governance Hub &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <em>Private &amp; Confidential</em>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

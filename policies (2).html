@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Policy Register | Lyvia Health Governance Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --lh-teal:#1A6B6B;--lh-teal-dark:#124E4E;--lh-teal-light:#E8F4F4;
+      --lh-gold:#C9973A;--lh-gold-light:#FDF3E3;--lh-charcoal:#2C2C2C;
+      --lh-mid-grey:#6B7280;--lh-light-grey:#F3F4F6;--lh-white:#FFFFFF;
+      --lh-danger:#B91C1C;--lh-amber:#D97706;--lh-green:#15803D;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--lh-light-grey);color:var(--lh-charcoal);min-height:100vh;display:flex;flex-direction:column}
+    .nav{background:var(--lh-teal-dark);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .lh-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none}
+    .lh-logo__mark{width:38px;height:38px;background:var(--lh-gold);color:var(--lh-teal-dark);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;flex-shrink:0}
+    .lh-logo__name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--lh-white);line-height:1.1}
+    .lh-logo__sub{font-size:.63rem;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase}
+    .nav-center{display:flex;align-items:center;gap:.2rem}
+    .nav-center a{color:rgba(255,255,255,.75);text-decoration:none;padding:.45rem .9rem;border-radius:5px;font-size:.84rem;font-weight:500;transition:all .15s}
+    .nav-center a:hover{background:rgba(255,255,255,.1);color:var(--lh-white)}
+    .nav-center a.active{color:var(--lh-white);border-bottom:2px solid var(--lh-gold);padding-bottom:calc(.45rem - 2px)}
+    .cqc-badge{background:rgba(232,244,244,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);border-radius:4px;font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;white-space:nowrap}
+    .hero{background:linear-gradient(140deg,var(--lh-teal-dark) 0%,var(--lh-teal) 100%);color:var(--lh-white);padding:2.8rem 2.5rem 2.2rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+    .hero-inner{max-width:1200px;margin:0 auto;position:relative}
+    .hero-breadcrumb{font-size:.78rem;opacity:.65;margin-bottom:.5rem}
+    .hero-breadcrumb a{color:inherit;text-decoration:none}
+    .hero-breadcrumb a:hover{text-decoration:underline}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
+    .hero-sub{font-size:.95rem;opacity:.82;font-weight:300;max-width:600px;line-height:1.6;margin-bottom:1.5rem}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
+    .hero-stat span:first-child{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;opacity:.6;display:block}
+    .hero-stat span:last-child{font-size:.92rem;font-weight:500}
+    main{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:2rem 2.5rem}
+    .summary-bar{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+    .summary-pill{background:var(--lh-white);border-radius:8px;border:1px solid rgba(0,0,0,.07);padding:.65rem 1.1rem;display:flex;align-items:center;gap:.5rem;font-size:.82rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .summary-pill strong{font-size:1.1rem;font-family:'Cormorant Garamond',serif}
+    .summary-pill.green strong{color:var(--lh-green)}
+    .summary-pill.teal strong{color:var(--lh-teal)}
+    .summary-pill.amber strong{color:var(--lh-amber)}
+    .toolbar{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);padding:1.1rem 1.4rem;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+    .search-wrap{position:relative;flex:1;min-width:220px}
+    .search-wrap i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--lh-mid-grey);width:16px;height:16px;pointer-events:none}
+    .search-wrap input{width:100%;padding:.55rem .9rem .55rem 2.2rem;border:1px solid #D1D5DB;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.86rem;color:var(--lh-charcoal);outline:none;transition:border-color .15s}
+    .search-wrap input:focus{border-color:var(--lh-teal);box-shadow:0 0 0 3px rgba(26,107,107,.08)}
+    .search-wrap input::placeholder{color:var(--lh-mid-grey)}
+    .filter-group{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+    .filter-btn{padding:.45rem .9rem;border-radius:20px;border:1px solid #D1D5DB;background:var(--lh-white);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--lh-mid-grey);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .filter-btn:hover{border-color:var(--lh-teal);color:var(--lh-teal)}
+    .filter-btn.active{background:var(--lh-teal);border-color:var(--lh-teal);color:var(--lh-white)}
+    .toolbar-right{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+    .result-count{font-size:.8rem;color:var(--lh-mid-grey);white-space:nowrap}
+    .series-section{margin-bottom:2rem}
+    .series-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;padding-bottom:.6rem;border-bottom:2px solid var(--lh-teal-light)}
+    .series-badge{background:var(--lh-teal);color:var(--lh-white);font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:4px;font-family:'Courier New',monospace;white-space:nowrap}
+    .series-badge.gold{background:var(--lh-gold)}
+    .series-badge.dark{background:var(--lh-teal-dark)}
+    .series-badge.slate{background:#475569}
+    .series-badge.plum{background:#7C3AED}
+    .series-badge.olive{background:#4D7C0F}
+    .series-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--lh-teal-dark)}
+    .series-count{font-size:.78rem;color:var(--lh-mid-grey);margin-left:auto}
+    .policy-table-wrap{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:var(--lh-light-grey);color:var(--lh-mid-grey);text-align:left;padding:.6rem 1rem;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid #E5E7EB}
+    tbody td{padding:.75rem 1rem;border-bottom:1px solid #F3F4F6;font-size:.85rem;vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover td{background:var(--lh-teal-light)}
+    tbody tr.hidden{display:none}
+    .doc-ref{font-family:'Courier New',monospace;font-size:.78rem;font-weight:700;color:var(--lh-teal-dark);white-space:nowrap}
+    .doc-title{font-weight:500;color:var(--lh-charcoal);line-height:1.4}
+    .doc-version{font-family:'Courier New',monospace;font-size:.78rem;color:var(--lh-mid-grey);white-space:nowrap}
+    .doc-author{font-size:.82rem;color:var(--lh-mid-grey);white-space:nowrap}
+    .doc-date{font-size:.82rem;color:var(--lh-mid-grey);white-space:nowrap}
+    .rag{display:inline-flex;align-items:center;gap:.3rem;padding:3px 10px;border-radius:12px;font-size:.73rem;font-weight:600;white-space:nowrap}
+    .rag-green{background:#DCFCE7;color:var(--lh-green)}
+    .rag-amber{background:#FEF3C7;color:var(--lh-amber)}
+    .rag-red{background:#FEE2E2;color:var(--lh-danger)}
+    .rag::before{content:'●';font-size:.5rem}
+    .no-results{text-align:center;padding:3rem 2rem;color:var(--lh-mid-grey);font-size:.9rem;display:none}
+    footer{background:var(--lh-charcoal);color:rgba(255,255,255,.45);text-align:center;font-size:.74rem;padding:1.1rem 2.5rem;margin-top:auto;letter-spacing:.02em}
+    footer strong{color:rgba(255,255,255,.75)}
+    @media(max-width:900px){.hero h1{font-size:1.8rem}.nav-center{display:none}main{padding:1.5rem}.toolbar{flex-direction:column;align-items:stretch}thead th:nth-child(3),thead th:nth-child(4),thead th:nth-child(5),tbody td:nth-child(3),tbody td:nth-child(4),tbody td:nth-child(5){display:none}}
+  </style>
+</head>
+<body>
+
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="lh-logo">
+    <div class="lh-logo__mark" aria-hidden="true">L</div>
+    <div>
+      <div class="lh-logo__name">Lyvia Health</div>
+      <div class="lh-logo__sub">Governance Hub</div>
+    </div>
+  </a>
+  <div class="nav-center">
+    <a href="index.html">Home</a>
+    <a href="policies.html" class="active">Policies</a>
+    <a href="formulary.html">Formulary</a>
+    <a href="meetings.html">Meeting Logs</a>
+    <a href="contacts.html">Contacts</a>
+  </div>
+  <span class="cqc-badge">CQC Registration In Progress</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-breadcrumb"><a href="index.html">Home</a> › Policy Register</div>
+    <h1>Policy Register</h1>
+    <p class="hero-sub">All controlled policy documents for Lyvia Health Ltd. Organised across seven series in line with CQC Key Questions and ICO requirements. Version-controlled and reviewed annually.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span>Total Documents</span><span>42</span></div>
+      <div class="hero-stat"><span>Series</span><span>7</span></div>
+      <div class="hero-stat"><span>Status</span><span>All Current — Version 1.0</span></div>
+      <div class="hero-stat"><span>Next Annual Review</span><span>March 2027</span></div>
+      <div class="hero-stat"><span>Document Author</span><span>Dr Nafisa Khatoon Hussain</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="summary-bar" role="region" aria-label="Policy summary">
+    <div class="summary-pill teal">
+      <i data-lucide="file-text" style="width:16px;height:16px;color:var(--lh-teal)" aria-hidden="true"></i>
+      <strong>42</strong> Total Policies
+    </div>
+    <div class="summary-pill green">
+      <i data-lucide="check-circle" style="width:16px;height:16px;color:var(--lh-green)" aria-hidden="true"></i>
+      <strong>42</strong> Current
+    </div>
+    <div class="summary-pill amber">
+      <i data-lucide="clock" style="width:16px;height:16px;color:var(--lh-amber)" aria-hidden="true"></i>
+      <strong>0</strong> Due for Review
+    </div>
+    <div class="summary-pill" style="margin-left:auto">
+      <i data-lucide="calendar" style="width:16px;height:16px;color:var(--lh-mid-grey)" aria-hidden="true"></i>
+      Next review: <strong style="margin-left:.25rem">March 2027</strong>
+    </div>
+  </div>
+
+  <div class="toolbar" role="search" aria-label="Filter policies">
+    <div class="search-wrap">
+      <i data-lucide="search" aria-hidden="true"></i>
+      <input type="text" id="searchInput" placeholder="Search by title or document reference…" aria-label="Search policies">
+    </div>
+    <div class="filter-group" role="group" aria-label="Filter by series">
+      <span style="font-size:.78rem;color:var(--lh-mid-grey);font-weight:500">Series:</span>
+      <button class="filter-btn active" onclick="filterSeries('all',this)">All</button>
+      <button class="filter-btn" onclick="filterSeries('CQS',this)">CQS</button>
+      <button class="filter-btn" onclick="filterSeries('DP',this)">DP</button>
+      <button class="filter-btn" onclick="filterSeries('OPT',this)">OPT</button>
+      <button class="filter-btn" onclick="filterSeries('OP',this)">OP</button>
+      <button class="filter-btn" onclick="filterSeries('LH',this)">LH</button>
+      <button class="filter-btn" onclick="filterSeries('LH-DPIA',this)">LH-DPIA</button>
+      <button class="filter-btn" onclick="filterSeries('LH-FM',this)">LH-FM</button>
+    </div>
+    <div class="toolbar-right">
+      <span class="result-count" id="resultCount" aria-live="polite">Showing 42 of 42</span>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults" role="status">
+    <i data-lucide="search-x" style="width:40px;height:40px;display:block;margin:0 auto .75rem;opacity:.4" aria-hidden="true"></i>
+    No policies match your search. Try a different term or clear your filters.
+  </div>
+
+  <!-- CQS -->
+  <section class="series-section" data-series="CQS" aria-labelledby="series-cqs">
+    <div class="series-header">
+      <span class="series-badge">CQS</span>
+      <span class="series-title" id="series-cqs">Clinical Quality &amp; Safety</span>
+      <span class="series-count">9 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Policy Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="CQS" data-title="clinical governance policy"><td class="doc-ref">CQS-001</td><td class="doc-title">Clinical Governance Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="consent policy"><td class="doc-ref">CQS-002</td><td class="doc-title">Consent Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="medicines management policy"><td class="doc-ref">CQS-003</td><td class="doc-title">Medicines Management Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="prescribing policy"><td class="doc-ref">CQS-004</td><td class="doc-title">Prescribing Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="infection prevention and control policy"><td class="doc-ref">CQS-005</td><td class="doc-title">Infection Prevention and Control Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="serious incident and sea policy"><td class="doc-ref">CQS-006</td><td class="doc-title">Serious Incident and SEA Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="complaints policy"><td class="doc-ref">CQS-007</td><td class="doc-title">Complaints Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="urgent and emergency referral policy"><td class="doc-ref">CQS-008</td><td class="doc-title">Urgent and Emergency Referral Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="CQS" data-title="clinical audit policy"><td class="doc-ref">CQS-009</td><td class="doc-title">Clinical Audit Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- DP -->
+  <section class="series-section" data-series="DP" aria-labelledby="series-dp">
+    <div class="series-header">
+      <span class="series-badge gold">DP</span>
+      <span class="series-title" id="series-dp">Data Protection &amp; Information Governance</span>
+      <span class="series-count">8 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Policy Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="DP" data-title="data protection uk gdpr policy"><td class="doc-ref">DP-001</td><td class="doc-title">Data Protection and UK GDPR Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="privacy notice patients"><td class="doc-ref">DP-002</td><td class="doc-title">Privacy Notice (Patients)</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="records management and retention policy"><td class="doc-ref">DP-003</td><td class="doc-title">Records Management and Retention Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="subject access request policy"><td class="doc-ref">DP-004</td><td class="doc-title">Subject Access Request Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="data breach incident response policy"><td class="doc-ref">DP-005</td><td class="doc-title">Data Breach and Incident Response Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="information security policy"><td class="doc-ref">DP-006</td><td class="doc-title">Information Security Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="clinical photography image handling policy"><td class="doc-ref">DP-007</td><td class="doc-title">Clinical Photography and Image Handling Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="DP" data-title="caldicott principles confidentiality policy"><td class="doc-ref">DP-008</td><td class="doc-title">Caldicott Principles and Confidentiality Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- OPT -->
+  <section class="series-section" data-series="OPT" aria-labelledby="series-opt">
+    <div class="series-header">
+      <span class="series-badge dark">OPT</span>
+      <span class="series-title" id="series-opt">Operational — Teleconsultation &amp; Technology</span>
+      <span class="series-count">6 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Policy Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="OPT" data-title="remote consultation policy"><td class="doc-ref">OPT-001</td><td class="doc-title">Remote Consultation Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OPT" data-title="digital platform semble governance policy"><td class="doc-ref">OPT-002</td><td class="doc-title">Digital Platform and Semble Governance Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OPT" data-title="identity verification policy"><td class="doc-ref">OPT-003</td><td class="doc-title">Identity Verification Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OPT" data-title="patient registration eligibility policy"><td class="doc-ref">OPT-004</td><td class="doc-title">Patient Registration and Eligibility Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OPT" data-title="continuity of care discharge policy"><td class="doc-ref">OPT-005</td><td class="doc-title">Continuity of Care and Discharge Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OPT" data-title="social media online communications policy"><td class="doc-ref">OPT-006</td><td class="doc-title">Social Media and Online Communications Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- OP -->
+  <section class="series-section" data-series="OP" aria-labelledby="series-op">
+    <div class="series-header">
+      <span class="series-badge slate">OP</span>
+      <span class="series-title" id="series-op">Operational — Workforce &amp; Organisational</span>
+      <span class="series-count">8 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Policy Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="OP" data-title="equality diversity inclusion policy"><td class="doc-ref">OP-001</td><td class="doc-title">Equality, Diversity and Inclusion Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="health and safety policy"><td class="doc-ref">OP-002</td><td class="doc-title">Health and Safety Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="recruitment employment policy"><td class="doc-ref">OP-003</td><td class="doc-title">Recruitment and Employment Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="training competency policy"><td class="doc-ref">OP-004</td><td class="doc-title">Training and Competency Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="chaperone policy"><td class="doc-ref">OP-005</td><td class="doc-title">Chaperone Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="whistleblowing policy"><td class="doc-ref">OP-006</td><td class="doc-title">Whistleblowing Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="business continuity policy"><td class="doc-ref">OP-007</td><td class="doc-title">Business Continuity Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="OP" data-title="document control policy"><td class="doc-ref">OP-008</td><td class="doc-title">Document Control Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- LH -->
+  <section class="series-section" data-series="LH" aria-labelledby="series-lh">
+    <div class="series-header">
+      <span class="series-badge">LH</span>
+      <span class="series-title" id="series-lh">Lyvia Health — Safeguarding &amp; Specialist</span>
+      <span class="series-count">6 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Policy Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="LH" data-title="safeguarding adults policy"><td class="doc-ref">LH-001</td><td class="doc-title">Safeguarding Adults Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH" data-title="mental capacity act policy"><td class="doc-ref">LH-002</td><td class="doc-title">Mental Capacity Act Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH" data-title="duty of candour policy"><td class="doc-ref">LH-003</td><td class="doc-title">Duty of Candour Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH" data-title="accessible information standard policy"><td class="doc-ref">LH-004</td><td class="doc-title">Accessible Information Standard Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH" data-title="end of life care policy signposting"><td class="doc-ref">LH-005</td><td class="doc-title">End of Life Care Policy (Signposting)</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH" data-title="scope of service clinical exclusions policy"><td class="doc-ref">LH-006</td><td class="doc-title">Scope of Service and Clinical Exclusions Policy</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- LH-DPIA -->
+  <section class="series-section" data-series="LH-DPIA" aria-labelledby="series-dpia">
+    <div class="series-header">
+      <span class="series-badge plum">LH-DPIA</span>
+      <span class="series-title" id="series-dpia">Data Protection Impact Assessments</span>
+      <span class="series-count">5 documents</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:140px">Doc Ref</th><th>DPIA Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="LH-DPIA" data-title="dpia semble clinical platform"><td class="doc-ref">LH-DPIA-001</td><td class="doc-title">DPIA — Semble Clinical Platform</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH-DPIA" data-title="dpia google workspace"><td class="doc-ref">LH-DPIA-002</td><td class="doc-title">DPIA — Google Workspace</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH-DPIA" data-title="dpia clinical photography"><td class="doc-ref">LH-DPIA-003</td><td class="doc-title">DPIA — Clinical Photography</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH-DPIA" data-title="dpia remote identity verification"><td class="doc-ref">LH-DPIA-004</td><td class="doc-title">DPIA — Remote Identity Verification</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+        <tr data-series="LH-DPIA" data-title="dpia patient registration"><td class="doc-ref">LH-DPIA-005</td><td class="doc-title">DPIA — Patient Registration</td><td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <!-- LH-FM -->
+  <section class="series-section" data-series="LH-FM" aria-labelledby="series-fm">
+    <div class="series-header">
+      <span class="series-badge olive">LH-FM</span>
+      <span class="series-title" id="series-fm">Medicines Formulary</span>
+      <span class="series-count">1 document</span>
+    </div>
+    <div class="policy-table-wrap">
+      <table><thead><tr><th style="width:120px">Doc Ref</th><th>Document Title</th><th style="width:80px">Version</th><th style="width:180px">Author</th><th style="width:130px">Next Review</th><th style="width:110px">Status</th></tr></thead>
+      <tbody>
+        <tr data-series="LH-FM" data-title="lyvia health medicines formulary">
+          <td class="doc-ref">LH-FM-001</td>
+          <td class="doc-title">Lyvia Health Medicines Formulary
+            <div style="margin-top:3px;font-size:.76rem;color:var(--lh-mid-grey)">Acne · Rosacea · Eczema · Psoriasis · Seborrhoeic Dermatitis</div>
+          </td>
+          <td class="doc-version">v1.0</td><td class="doc-author">Dr NK Hussain</td><td class="doc-date">March 2027</td><td><span class="rag rag-green">Current</span></td>
+        </tr>
+      </tbody></table>
+    </div>
+  </section>
+
+</main>
+
+<footer role="contentinfo">
+  <strong>Lyvia Health Ltd</strong> &nbsp;·&nbsp; Policy Register &nbsp;·&nbsp; Document Control &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <em>Private &amp; Confidential</em>
+</footer>
+
+<script>
+  lucide.createIcons();
+  const searchInput = document.getElementById('searchInput');
+  const resultCount = document.getElementById('resultCount');
+  const noResults   = document.getElementById('noResults');
+  let activeSeries  = 'all';
+
+  function applyFilters() {
+    const term = searchInput.value.toLowerCase().trim();
+    let visible = 0;
+    document.querySelectorAll('tbody tr').forEach(row => {
+      const s = row.dataset.series || '';
+      const t = (row.dataset.title || '').toLowerCase();
+      const r = (row.querySelector('.doc-ref') || {}).textContent?.toLowerCase() || '';
+      const matchS = activeSeries === 'all' || s === activeSeries;
+      const matchT = !term || t.includes(term) || r.includes(term);
+      if (matchS && matchT) { row.classList.remove('hidden'); visible++; }
+      else row.classList.add('hidden');
+    });
+    document.querySelectorAll('.series-section').forEach(sec => {
+      const sm = activeSeries === 'all' || sec.dataset.series === activeSeries;
+      const hv = sec.querySelectorAll('tbody tr:not(.hidden)').length > 0;
+      sec.style.display = (sm && hv) ? '' : 'none';
+    });
+    const total = document.querySelectorAll('tbody tr').length;
+    resultCount.textContent = 'Showing ' + visible + ' of ' + total;
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function filterSeries(series, btn) {
+    activeSeries = series;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  }
+
+  searchInput.addEventListener('input', applyFilters);
+</script>
+</body>
+</html>
