@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Key Contacts | Lyvia Health Governance Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --lh-teal:#1A6B6B;--lh-teal-dark:#124E4E;--lh-teal-light:#E8F4F4;
+      --lh-gold:#C9973A;--lh-gold-light:#FDF3E3;--lh-charcoal:#2C2C2C;
+      --lh-mid-grey:#6B7280;--lh-light-grey:#F3F4F6;--lh-white:#FFFFFF;
+      --lh-danger:#B91C1C;--lh-amber:#D97706;--lh-green:#15803D;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--lh-light-grey);color:var(--lh-charcoal);min-height:100vh;display:flex;flex-direction:column}
+
+    /* NAV */
+    .nav{background:var(--lh-teal-dark);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .lh-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none}
+    .lh-logo__mark{width:38px;height:38px;background:var(--lh-gold);color:var(--lh-teal-dark);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;flex-shrink:0}
+    .lh-logo__name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--lh-white);line-height:1.1}
+    .lh-logo__sub{font-size:.63rem;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase}
+    .nav-center{display:flex;align-items:center;gap:.2rem}
+    .nav-center a{color:rgba(255,255,255,.75);text-decoration:none;padding:.45rem .9rem;border-radius:5px;font-size:.84rem;font-weight:500;transition:all .15s}
+    .nav-center a:hover{background:rgba(255,255,255,.1);color:var(--lh-white)}
+    .nav-center a.active{color:var(--lh-white);border-bottom:2px solid var(--lh-gold);padding-bottom:calc(.45rem - 2px)}
+    .cqc-badge{background:rgba(232,244,244,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);border-radius:4px;font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;white-space:nowrap}
+
+    /* HERO */
+    .hero{background:linear-gradient(140deg,var(--lh-teal-dark) 0%,var(--lh-teal) 100%);color:var(--lh-white);padding:2.8rem 2.5rem 2.2rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+    .hero-inner{max-width:1200px;margin:0 auto;position:relative}
+    .hero-breadcrumb{font-size:.78rem;opacity:.65;margin-bottom:.5rem}
+    .hero-breadcrumb a{color:inherit;text-decoration:none}
+    .hero-breadcrumb a:hover{text-decoration:underline}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
+    .hero-sub{font-size:.95rem;opacity:.82;font-weight:300;max-width:620px;line-height:1.6}
+
+    /* MAIN */
+    main{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:2rem 2.5rem}
+
+    /* SECTION HEADING */
+    .section-heading{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--lh-teal-dark);margin-bottom:1rem;margin-top:2rem;display:flex;align-items:center;gap:.6rem}
+    .section-heading:first-of-type{margin-top:0}
+    .section-heading i{width:20px;height:20px;color:var(--lh-teal)}
+    .section-divider{border:none;border-top:2px solid var(--lh-teal-light);margin-bottom:1.25rem}
+
+    /* DIRECTOR CARDS */
+    .directors-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem}
+    .director-card{background:var(--lh-white);border-radius:12px;border:1px solid rgba(0,0,0,.07);box-shadow:0 2px 8px rgba(0,0,0,.06);overflow:hidden}
+    .director-card__top{padding:1.5rem 1.5rem 1.25rem;border-bottom:1px solid var(--lh-light-grey)}
+    .director-card__avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;margin-bottom:.85rem;flex-shrink:0}
+    .avatar-teal{background:var(--lh-teal-light);color:var(--lh-teal-dark)}
+    .avatar-gold{background:var(--lh-gold-light);color:#92400E}
+    .director-card__name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--lh-charcoal);margin-bottom:.2rem}
+    .director-card__title{font-size:.82rem;color:var(--lh-mid-grey);margin-bottom:.85rem}
+    .role-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+    .role-tag{display:inline-block;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:4px;letter-spacing:.03em}
+    .role-tag.teal{background:var(--lh-teal-light);color:var(--lh-teal-dark);border:1px solid rgba(26,107,107,.2)}
+    .role-tag.gold{background:var(--lh-gold-light);color:#92400E;border:1px solid rgba(201,151,58,.25)}
+    .director-card__bottom{padding:1.1rem 1.5rem;display:flex;flex-direction:column;gap:.55rem}
+    .contact-row{display:flex;align-items:center;gap:.6rem;font-size:.84rem}
+    .contact-row i{width:15px;height:15px;color:var(--lh-mid-grey);flex-shrink:0}
+    .contact-row a{color:var(--lh-teal);text-decoration:none}
+    .contact-row a:hover{text-decoration:underline}
+    .contact-row span{color:var(--lh-charcoal)}
+
+    /* RESPONSIBILITY TABLE */
+    .resp-table-wrap{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);overflow:hidden;margin-bottom:2rem}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:var(--lh-teal);color:var(--lh-white);text-align:left;padding:.65rem 1rem;font-size:.73rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    tbody td{padding:.75rem 1rem;border-bottom:1px solid #F3F4F6;font-size:.85rem;vertical-align:middle}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover td{background:var(--lh-teal-light)}
+    .resp-role{font-weight:600;color:var(--lh-charcoal)}
+    .resp-holder{color:var(--lh-teal-dark);font-weight:500}
+    .resp-desc{font-size:.8rem;color:var(--lh-mid-grey);line-height:1.5}
+
+    /* EXTERNAL / SUPPORT CARDS */
+    .support-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem}
+    .support-card{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);padding:1.3rem 1.4rem}
+    .support-card__icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:.85rem}
+    .support-card__org{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--lh-teal-dark);margin-bottom:.2rem}
+    .support-card__role{font-size:.78rem;color:var(--lh-mid-grey);margin-bottom:.75rem;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+    .support-card__details{display:flex;flex-direction:column;gap:.45rem}
+    .support-detail{display:flex;align-items:flex-start;gap:.55rem;font-size:.83rem;line-height:1.5}
+    .support-detail i{width:14px;height:14px;color:var(--lh-mid-grey);flex-shrink:0;margin-top:2px}
+    .support-detail a{color:var(--lh-teal);text-decoration:none}
+    .support-detail a:hover{text-decoration:underline}
+
+    /* ESCALATION PATHWAY */
+    .pathway-card{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);padding:1.4rem 1.5rem;margin-bottom:2rem}
+    .pathway-steps{display:flex;flex-direction:column;gap:0}
+    .pathway-step{display:flex;gap:1rem;align-items:flex-start;padding:.85rem 0;border-bottom:1px solid var(--lh-light-grey)}
+    .pathway-step:last-child{border-bottom:none;padding-bottom:0}
+    .pathway-step:first-child{padding-top:0}
+    .step-num{width:30px;height:30px;border-radius:50%;background:var(--lh-teal);color:var(--lh-white);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;margin-top:1px}
+    .step-content{flex:1}
+    .step-title{font-weight:600;font-size:.88rem;margin-bottom:.2rem;color:var(--lh-charcoal)}
+    .step-desc{font-size:.82rem;color:var(--lh-mid-grey);line-height:1.5}
+
+    /* FOOTER */
+    footer{background:var(--lh-charcoal);color:rgba(255,255,255,.45);text-align:center;font-size:.74rem;padding:1.1rem 2.5rem;margin-top:auto;letter-spacing:.02em}
+    footer strong{color:rgba(255,255,255,.75)}
+
+    @media(max-width:900px){
+      .hero h1{font-size:1.8rem}.nav-center{display:none}main{padding:1.5rem}
+      .directors-grid{grid-template-columns:1fr}
+      .support-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="lh-logo">
+    <div class="lh-logo__mark" aria-hidden="true">L</div>
+    <div>
+      <div class="lh-logo__name">Lyvia Health</div>
+      <div class="lh-logo__sub">Governance Hub</div>
+    </div>
+  </a>
+  <div class="nav-center">
+    <a href="index.html">Home</a>
+    <a href="policies.html">Policies</a>
+    <a href="formulary.html">Formulary</a>
+    <a href="meetings.html">Meeting Logs</a>
+    <a href="contacts.html" class="active">Contacts</a>
+  </div>
+  <span class="cqc-badge">CQC Registration In Progress</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-breadcrumb"><a href="index.html">Home</a> › Key Contacts</div>
+    <h1>Key Contacts</h1>
+    <p class="hero-sub">Designated governance role-holders and external contacts for Lyvia Health Ltd. All regulatory, safeguarding, and information governance enquiries should be directed to the appropriate person below.</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- DIRECTORS -->
+  <h2 class="section-heading"><i data-lucide="users" aria-hidden="true"></i>Directors &amp; Governance Role-Holders</h2>
+  <hr class="section-divider">
+
+  <div class="directors-grid">
+
+    <!-- DR NAFISA -->
+    <div class="director-card">
+      <div class="director-card__top">
+        <div class="director-card__avatar avatar-teal" aria-hidden="true">N</div>
+        <div class="director-card__name">Dr Nafisa Khatoon Hussain</div>
+        <div class="director-card__title">Co-Director, Lyvia Health Ltd</div>
+        <div class="role-tags">
+          <span class="role-tag teal">Nominated Individual</span>
+          <span class="role-tag teal">SIRO</span>
+          <span class="role-tag teal">Safeguarding Lead</span>
+          <span class="role-tag teal">Document Author</span>
+        </div>
+      </div>
+      <div class="director-card__bottom">
+        <div class="contact-row">
+          <i data-lucide="briefcase" aria-hidden="true"></i>
+          <span>Nominated Individual — primary CQC contact</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="shield" aria-hidden="true"></i>
+          <span>Senior Information Risk Owner (SIRO)</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="heart-handshake" aria-hidden="true"></i>
+          <span>Designated Safeguarding Lead (Adults)</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="file-text" aria-hidden="true"></i>
+          <span>Author of all governance policy documents</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="video" aria-hidden="true"></i>
+          <span>Consultations via Semble platform</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DR MAHREEN -->
+    <div class="director-card">
+      <div class="director-card__top">
+        <div class="director-card__avatar avatar-gold" aria-hidden="true">M</div>
+        <div class="director-card__name">Dr Mahreen Khan</div>
+        <div class="director-card__title">Co-Director, Lyvia Health Ltd</div>
+        <div class="role-tags">
+          <span class="role-tag gold">Registered Manager</span>
+          <span class="role-tag gold">IG Lead</span>
+          <span class="role-tag gold">Caldicott Guardian</span>
+        </div>
+      </div>
+      <div class="director-card__bottom">
+        <div class="contact-row">
+          <i data-lucide="building" aria-hidden="true"></i>
+          <span>Registered Manager — CQC registered</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="lock" aria-hidden="true"></i>
+          <span>Information Governance Lead</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="user-check" aria-hidden="true"></i>
+          <span>Caldicott Guardian — patient confidentiality oversight</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="scale" aria-hidden="true"></i>
+          <span>Responsible for data protection compliance</span>
+        </div>
+        <div class="contact-row">
+          <i data-lucide="video" aria-hidden="true"></i>
+          <span>Consultations via Semble platform</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESPONSIBILITY MATRIX -->
+  <h2 class="section-heading"><i data-lucide="layout-list" aria-hidden="true"></i>Governance Responsibility Matrix</h2>
+  <hr class="section-divider">
+
+  <div class="resp-table-wrap" style="margin-bottom:2rem">
+    <table aria-label="Governance responsibilities">
+      <thead>
+        <tr>
+          <th style="width:200px">Role</th>
+          <th style="width:200px">Role-Holder</th>
+          <th>Responsibilities</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="resp-role">Nominated Individual</span></td>
+          <td><span class="resp-holder">Dr Nafisa Khatoon Hussain</span></td>
+          <td class="resp-desc">Primary CQC contact. Responsible for ensuring the service meets CQC registration requirements and Key Questions. Liaison with CQC inspectors.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Registered Manager</span></td>
+          <td><span class="resp-holder">Dr Mahreen Khan</span></td>
+          <td class="resp-desc">Responsible for day-to-day management of the regulated activity. CQC registered. Accountable for safe delivery of care.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Senior Information Risk Owner (SIRO)</span></td>
+          <td><span class="resp-holder">Dr Nafisa Khatoon Hussain</span></td>
+          <td class="resp-desc">Accountable for information risk across the organisation. Oversees the information risk register and ensures appropriate controls are in place.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Safeguarding Lead</span></td>
+          <td><span class="resp-holder">Dr Nafisa Khatoon Hussain</span></td>
+          <td class="resp-desc">Designated Safeguarding Lead for adults. Responsible for safeguarding policy, staff training, and any referrals to statutory services. Adults-only service — no children safeguarding lead required.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Information Governance Lead</span></td>
+          <td><span class="resp-holder">Dr Mahreen Khan</span></td>
+          <td class="resp-desc">Leads on UK GDPR compliance, data protection policies, subject access requests, data breach response, and staff IG training.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Caldicott Guardian</span></td>
+          <td><span class="resp-holder">Dr Mahreen Khan</span></td>
+          <td class="resp-desc">Responsible for protecting the confidentiality of patient information and enabling appropriate information sharing. Applies the Caldicott Principles to all data flows.</td>
+        </tr>
+        <tr>
+          <td><span class="resp-role">Data Protection Officer</span></td>
+          <td><span class="resp-holder">Clinical DPO (External)</span></td>
+          <td class="resp-desc">Independent external DPO. Advises on UK GDPR obligations, monitors compliance, and is the first point of contact for the ICO. Appointed from Clinical DPO, Hornbeam Business Park, Harrogate.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EXTERNAL CONTACTS -->
+  <h2 class="section-heading"><i data-lucide="link" aria-hidden="true"></i>External &amp; Regulatory Contacts</h2>
+  <hr class="section-divider">
+
+  <div class="support-grid">
+
+    <!-- DPO -->
+    <div class="support-card">
+      <div class="support-card__icon" style="background:#EDE9FE;color:#6D28D9" aria-hidden="true">
+        <i data-lucide="shield-check" style="width:20px;height:20px"></i>
+      </div>
+      <div class="support-card__org">Clinical DPO</div>
+      <div class="support-card__role">External Data Protection Officer</div>
+      <div class="support-card__details">
+        <div class="support-detail"><i data-lucide="map-pin" aria-hidden="true"></i><span>Hornbeam Business Park, Harrogate</span></div>
+        <div class="support-detail"><i data-lucide="info" aria-hidden="true"></i><span>Independent external DPO. Contact for all UK GDPR and data protection queries, subject access requests, and ICO correspondence.</span></div>
+        <div class="support-detail"><i data-lucide="user" aria-hidden="true"></i><span>Appointed contact: Dr Mahreen Khan (IG Lead) liaises with DPO on behalf of Lyvia Health Ltd.</span></div>
+      </div>
+    </div>
+
+    <!-- CQC -->
+    <div class="support-card">
+      <div class="support-card__icon" style="background:var(--lh-teal-light);color:var(--lh-teal-dark)" aria-hidden="true">
+        <i data-lucide="building-2" style="width:20px;height:20px"></i>
+      </div>
+      <div class="support-card__org">Care Quality Commission (CQC)</div>
+      <div class="support-card__role">Regulator — Registration In Progress</div>
+      <div class="support-card__details">
+        <div class="support-detail"><i data-lucide="globe" aria-hidden="true"></i><a href="https://www.cqc.org.uk" target="_blank" rel="noopener">www.cqc.org.uk</a></div>
+        <div class="support-detail"><i data-lucide="phone" aria-hidden="true"></i><span>03000 616161</span></div>
+        <div class="support-detail"><i data-lucide="user" aria-hidden="true"></i><span>Primary CQC contact: Dr Nafisa Khatoon Hussain (Nominated Individual)</span></div>
+        <div class="support-detail"><i data-lucide="info" aria-hidden="true"></i><span>Lyvia Health Ltd CQC registration is currently in progress.</span></div>
+      </div>
+    </div>
+
+    <!-- ICO -->
+    <div class="support-card">
+      <div class="support-card__icon" style="background:#DBEAFE;color:#1D4ED8" aria-hidden="true">
+        <i data-lucide="lock" style="width:20px;height:20px"></i>
+      </div>
+      <div class="support-card__org">Information Commissioner's Office (ICO)</div>
+      <div class="support-card__role">Data Protection Regulator</div>
+      <div class="support-card__details">
+        <div class="support-detail"><i data-lucide="globe" aria-hidden="true"></i><a href="https://ico.org.uk" target="_blank" rel="noopener">ico.org.uk</a></div>
+        <div class="support-detail"><i data-lucide="phone" aria-hidden="true"></i><span>0303 123 1113</span></div>
+        <div class="support-detail"><i data-lucide="info" aria-hidden="true"></i><span>Lyvia Health Ltd is registered with the ICO as a data controller. Reportable data breaches must be notified within 72 hours.</span></div>
+        <div class="support-detail"><i data-lucide="user" aria-hidden="true"></i><span>ICO contact: Dr Mahreen Khan (IG Lead)</span></div>
+      </div>
+    </div>
+
+    <!-- GMC -->
+    <div class="support-card">
+      <div class="support-card__icon" style="background:#DCFCE7;color:var(--lh-green)" aria-hidden="true">
+        <i data-lucide="stethoscope" style="width:20px;height:20px"></i>
+      </div>
+      <div class="support-card__org">General Medical Council (GMC)</div>
+      <div class="support-card__role">Medical Regulator</div>
+      <div class="support-card__details">
+        <div class="support-detail"><i data-lucide="globe" aria-hidden="true"></i><a href="https://www.gmc-uk.org" target="_blank" rel="noopener">www.gmc-uk.org</a></div>
+        <div class="support-detail"><i data-lucide="phone" aria-hidden="true"></i><span>0161 923 6602</span></div>
+        <div class="support-detail"><i data-lucide="info" aria-hidden="true"></i><span>Both clinicians hold full GMC registration with a licence to practise. Registration verified annually.</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ESCALATION PATHWAY -->
+  <h2 class="section-heading"><i data-lucide="alert-triangle" aria-hidden="true"></i>Escalation &amp; Concern Pathway</h2>
+  <hr class="section-divider">
+
+  <div class="pathway-card">
+    <div class="pathway-steps">
+      <div class="pathway-step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <div class="step-title">Clinical Concern or Patient Safety Issue</div>
+          <div class="step-desc">Raise immediately with Dr Nafisa Khatoon Hussain (Nominated Individual). Log in the Semble incident register and the Governance Tracker SEA log. For urgent cancer concerns: same-day patient advice and same-day GP letter requesting GP consider 2WW referral.</div>
+        </div>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <div class="step-title">Safeguarding Concern (Adult)</div>
+          <div class="step-desc">Contact Dr Nafisa Khatoon Hussain (Safeguarding Lead) immediately. Follow LH-001 Safeguarding Adults Policy. Refer to the local authority adult safeguarding team as appropriate. Do not delay referral pending internal discussion if there is immediate risk.</div>
+        </div>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <div class="step-title">Data Breach or Information Security Incident</div>
+          <div class="step-desc">Notify Dr Mahreen Khan (IG Lead) immediately. Follow DP-005 Data Breach and Incident Response Policy. If a reportable breach, notify the ICO within 72 hours. Involve the external DPO. Log in the Governance Tracker incident log.</div>
+        </div>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <div class="step-title">Complaint</div>
+          <div class="step-desc">Follow CQS-007 Complaints Policy. Acknowledge within 3 working days. Investigate and respond within 20 working days. Escalate unresolved complaints to the Nominated Individual (Dr NK Hussain). Patients may also contact the CQC or seek independent resolution.</div>
+        </div>
+      </div>
+      <div class="pathway-step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <div class="step-title">Whistleblowing / Raising a Concern</div>
+          <div class="step-desc">Follow OP-006 Whistleblowing Policy. Concerns may be raised with either director in confidence. If concerns relate to a director, contact the CQC directly on 03000 616161 or via <a href="https://www.cqc.org.uk" target="_blank" rel="noopener" style="color:var(--lh-teal)">cqc.org.uk</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  <strong>Lyvia Health Ltd</strong> &nbsp;·&nbsp; Key Contacts &amp; Governance Roles &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <em>Private &amp; Confidential</em>
+</footer>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicines Formulary | Lyvia Health Governance Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --lh-teal:#1A6B6B;--lh-teal-dark:#124E4E;--lh-teal-light:#E8F4F4;
+      --lh-gold:#C9973A;--lh-gold-light:#FDF3E3;--lh-charcoal:#2C2C2C;
+      --lh-mid-grey:#6B7280;--lh-light-grey:#F3F4F6;--lh-white:#FFFFFF;
+      --lh-danger:#B91C1C;--lh-amber:#D97706;--lh-green:#15803D;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--lh-light-grey);color:var(--lh-charcoal);min-height:100vh;display:flex;flex-direction:column}
+
+    /* NAV */
+    .nav{background:var(--lh-teal-dark);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .lh-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none}
+    .lh-logo__mark{width:38px;height:38px;background:var(--lh-gold);color:var(--lh-teal-dark);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;flex-shrink:0}
+    .lh-logo__name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--lh-white);line-height:1.1}
+    .lh-logo__sub{font-size:.63rem;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase}
+    .nav-center{display:flex;align-items:center;gap:.2rem}
+    .nav-center a{color:rgba(255,255,255,.75);text-decoration:none;padding:.45rem .9rem;border-radius:5px;font-size:.84rem;font-weight:500;transition:all .15s}
+    .nav-center a:hover{background:rgba(255,255,255,.1);color:var(--lh-white)}
+    .nav-center a.active{color:var(--lh-white);border-bottom:2px solid var(--lh-gold);padding-bottom:calc(.45rem - 2px)}
+    .cqc-badge{background:rgba(232,244,244,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);border-radius:4px;font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;white-space:nowrap}
+
+    /* HERO */
+    .hero{background:linear-gradient(140deg,var(--lh-teal-dark) 0%,var(--lh-teal) 100%);color:var(--lh-white);padding:2.8rem 2.5rem 2.2rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+    .hero-inner{max-width:1200px;margin:0 auto;position:relative}
+    .hero-breadcrumb{font-size:.78rem;opacity:.65;margin-bottom:.5rem}
+    .hero-breadcrumb a{color:inherit;text-decoration:none}
+    .hero-breadcrumb a:hover{text-decoration:underline}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
+    .hero-sub{font-size:.95rem;opacity:.82;font-weight:300;max-width:620px;line-height:1.6;margin-bottom:1.5rem}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
+    .hero-stat span:first-child{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;opacity:.6;display:block}
+    .hero-stat span:last-child{font-size:.92rem;font-weight:500}
+
+    /* MAIN */
+    main{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:2rem 2.5rem}
+
+    /* SCOPE BANNER */
+    .scope-banner{background:#FFF7ED;border:1px solid #F97316;border-left:4px solid #F97316;border-radius:8px;padding:1rem 1.4rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:.9rem}
+    .scope-banner__icon{color:#EA580C;flex-shrink:0;margin-top:1px}
+    .scope-banner__title{font-weight:600;font-size:.88rem;color:#9A3412;margin-bottom:.35rem}
+    .scope-banner__items{display:flex;flex-wrap:wrap;gap:.5rem}
+    .scope-pill{display:inline-flex;align-items:center;gap:.35rem;background:var(--lh-white);border:1px solid #FED7AA;border-radius:20px;padding:3px 11px;font-size:.78rem;font-weight:500;color:#7C2D12}
+    .scope-pill i{width:12px;height:12px;color:#EA580C}
+
+    /* GUIDELINE BANNER */
+    .guideline-banner{background:var(--lh-teal-light);border:1px solid var(--lh-teal);border-radius:8px;padding:.85rem 1.2rem;margin-bottom:1.5rem;font-size:.84rem;color:var(--lh-teal-dark);display:flex;align-items:center;gap:.75rem}
+    .guideline-banner strong{font-weight:600}
+
+    /* TABS */
+    .tab-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+    .tab-btn{padding:.55rem 1.2rem;border-radius:8px;border:1px solid #D1D5DB;background:var(--lh-white);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;color:var(--lh-mid-grey);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:.4rem}
+    .tab-btn:hover{border-color:var(--lh-teal);color:var(--lh-teal)}
+    .tab-btn.active{background:var(--lh-teal);border-color:var(--lh-teal);color:var(--lh-white);box-shadow:0 2px 8px rgba(26,107,107,.25)}
+    .tab-btn .tab-count{font-size:.72rem;background:rgba(255,255,255,.25);border-radius:10px;padding:1px 7px;font-weight:600}
+    .tab-btn:not(.active) .tab-count{background:var(--lh-light-grey);color:var(--lh-mid-grey)}
+
+    /* CONDITION PANEL */
+    .condition-panel{display:none}
+    .condition-panel.active{display:block}
+
+    /* CONDITION HEADER */
+    .condition-header{background:var(--lh-white);border-radius:10px 10px 0 0;border:1px solid rgba(0,0,0,.07);border-bottom:none;padding:1.25rem 1.5rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
+    .condition-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--lh-teal-dark)}
+    .condition-desc{font-size:.84rem;color:var(--lh-mid-grey);margin-top:.3rem;line-height:1.5;max-width:600px}
+    .condition-refs{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .ref-tag{display:inline-flex;align-items:center;gap:.3rem;background:var(--lh-teal-light);color:var(--lh-teal-dark);border:1px solid var(--lh-teal);border-radius:4px;font-size:.7rem;font-weight:600;padding:2px 9px;letter-spacing:.04em}
+
+    /* FORMULARY TABLE */
+    .formulary-table-wrap{background:var(--lh-white);border-radius:0 0 10px 10px;border:1px solid rgba(0,0,0,.07);overflow:hidden;margin-bottom:1.5rem}
+    table{width:100%;border-collapse:collapse}
+    thead th{background:var(--lh-teal);color:var(--lh-white);text-align:left;padding:.65rem 1rem;font-size:.73rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+    tbody td{padding:.8rem 1rem;border-bottom:1px solid #F3F4F6;font-size:.85rem;vertical-align:top;line-height:1.5}
+    tbody tr:last-child td{border-bottom:none}
+    tbody tr:hover td{background:var(--lh-teal-light)}
+    .drug-name{font-weight:600;color:var(--lh-charcoal)}
+    .drug-generic{font-size:.78rem;color:var(--lh-mid-grey);margin-top:1px;font-style:italic}
+    .formulation-badge{display:inline-block;background:var(--lh-light-grey);color:var(--lh-charcoal);border-radius:4px;font-size:.75rem;padding:2px 8px;font-weight:500;margin-right:3px;margin-bottom:2px}
+    .dose-cell{font-size:.83rem;line-height:1.6}
+    .notes-cell{font-size:.82rem;color:var(--lh-mid-grey);line-height:1.5}
+    .nice-ref{font-size:.75rem;font-family:'Courier New',monospace;color:var(--lh-teal-dark);background:var(--lh-teal-light);border-radius:3px;padding:1px 6px;white-space:nowrap}
+
+    /* FOOTER NOTE */
+    .formulary-footer-note{background:var(--lh-white);border:1px solid rgba(0,0,0,.07);border-radius:10px;padding:1.25rem 1.5rem;margin-top:1rem;font-size:.84rem;color:var(--lh-mid-grey);line-height:1.7;display:flex;gap:.85rem;align-items:flex-start}
+    .formulary-footer-note strong{color:var(--lh-charcoal)}
+
+    /* FOOTER */
+    footer{background:var(--lh-charcoal);color:rgba(255,255,255,.45);text-align:center;font-size:.74rem;padding:1.1rem 2.5rem;margin-top:auto;letter-spacing:.02em}
+    footer strong{color:rgba(255,255,255,.75)}
+
+    @media(max-width:900px){
+      .hero h1{font-size:1.8rem}.nav-center{display:none}main{padding:1.5rem}
+      .tab-bar{gap:.4rem}.tab-btn{padding:.45rem .85rem;font-size:.8rem}
+      thead th:nth-child(5),tbody td:nth-child(5){display:none}
+      .condition-header{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="lh-logo">
+    <div class="lh-logo__mark" aria-hidden="true">L</div>
+    <div>
+      <div class="lh-logo__name">Lyvia Health</div>
+      <div class="lh-logo__sub">Governance Hub</div>
+    </div>
+  </a>
+  <div class="nav-center">
+    <a href="index.html">Home</a>
+    <a href="policies.html">Policies</a>
+    <a href="formulary.html" class="active">Formulary</a>
+    <a href="meetings.html">Meeting Logs</a>
+    <a href="contacts.html">Contacts</a>
+  </div>
+  <span class="cqc-badge">CQC Registration In Progress</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-breadcrumb"><a href="index.html">Home</a> › Medicines Formulary</div>
+    <h1>Medicines Formulary</h1>
+    <p class="hero-sub">Approved treatments for Lyvia Health Ltd's private dermatology service. Aligned to current NICE guidelines and British Association of Dermatologists (BAD) recommendations. Document reference: LH-FM-001 v1.0.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span>Document Ref</span><span>LH-FM-001</span></div>
+      <div class="hero-stat"><span>Version</span><span>1.0</span></div>
+      <div class="hero-stat"><span>Conditions Covered</span><span>5</span></div>
+      <div class="hero-stat"><span>Next Review</span><span>March 2026</span></div>
+      <div class="hero-stat"><span>Author</span><span>Dr Nafisa Khatoon Hussain</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SCOPE BANNER -->
+  <div class="scope-banner" role="note" aria-label="Prescribing scope restrictions">
+    <div class="scope-banner__icon"><i data-lucide="alert-triangle" style="width:20px;height:20px" aria-hidden="true"></i></div>
+    <div>
+      <div class="scope-banner__title">Prescribing Scope — Important Restrictions</div>
+      <div class="scope-banner__items">
+        <span class="scope-pill"><i data-lucide="check" aria-hidden="true"></i>Private prescriptions only</span>
+        <span class="scope-pill"><i data-lucide="x" aria-hidden="true"></i>No NHS FP10 / EPS</span>
+        <span class="scope-pill"><i data-lucide="x" aria-hidden="true"></i>No controlled drugs</span>
+        <span class="scope-pill"><i data-lucide="x" aria-hidden="true"></i>No oral isotretinoin</span>
+        <span class="scope-pill"><i data-lucide="check" aria-hidden="true"></i>Adults 18+ only</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GUIDELINE BANNER -->
+  <div class="guideline-banner" role="note">
+    <i data-lucide="book-open" style="width:18px;height:18px;flex-shrink:0" aria-hidden="true"></i>
+    <span>All treatments aligned to <strong>NICE Clinical Guidelines</strong> and <strong>British Association of Dermatologists (BAD)</strong> recommendations. The prescribing clinician retains full clinical judgement and responsibility for individual patient suitability.</span>
+  </div>
+
+  <!-- TABS -->
+  <div class="tab-bar" role="tablist" aria-label="Select condition">
+    <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="panel-acne" onclick="showTab('acne',this)">
+      <i data-lucide="circle-dot" style="width:14px;height:14px" aria-hidden="true"></i>
+      Acne <span class="tab-count">8</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-rosacea" onclick="showTab('rosacea',this)">
+      <i data-lucide="circle-dot" style="width:14px;height:14px" aria-hidden="true"></i>
+      Rosacea <span class="tab-count">5</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-eczema" onclick="showTab('eczema',this)">
+      <i data-lucide="circle-dot" style="width:14px;height:14px" aria-hidden="true"></i>
+      Eczema <span class="tab-count">7</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-psoriasis" onclick="showTab('psoriasis',this)">
+      <i data-lucide="circle-dot" style="width:14px;height:14px" aria-hidden="true"></i>
+      Psoriasis <span class="tab-count">5</span>
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-sebderm" onclick="showTab('sebderm',this)">
+      <i data-lucide="circle-dot" style="width:14px;height:14px" aria-hidden="true"></i>
+      Seborrhoeic Dermatitis <span class="tab-count">4</span>
+    </button>
+  </div>
+
+  <!-- ══ ACNE ══ -->
+  <div id="panel-acne" class="condition-panel active" role="tabpanel" aria-labelledby="tab-acne">
+    <div class="condition-header">
+      <div>
+        <div class="condition-title">Acne Vulgaris</div>
+        <div class="condition-desc">Inflammatory and non-inflammatory acne. Treatment stepwise from topical agents through to combination oral therapy. Oral isotretinoin excluded from formulary — refer to specialist if indicated.</div>
+        <div class="condition-refs">
+          <span class="ref-tag">NICE NG198</span>
+          <span class="ref-tag">BAD Acne Guidelines 2021</span>
+        </div>
+      </div>
+    </div>
+    <div class="formulary-table-wrap">
+      <table aria-label="Acne treatments">
+        <thead><tr><th>Drug</th><th style="width:160px">Formulation</th><th style="width:200px">Dose / Regimen</th><th>Clinical Notes</th><th style="width:120px">Guideline Ref</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="drug-name">Benzoyl Peroxide</div><div class="drug-generic">benzoyl peroxide</div></td>
+            <td><span class="formulation-badge">2.5% gel</span><span class="formulation-badge">5% gel</span><span class="formulation-badge">10% gel</span></td>
+            <td class="dose-cell">Apply once daily; increase to twice daily if tolerated</td>
+            <td class="notes-cell">First-line for mild–moderate acne. Start at lower strength. Bleaches fabric — advise patient accordingly.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Adapalene</div><div class="drug-generic">adapalene 0.1%</div></td>
+            <td><span class="formulation-badge">0.1% gel</span><span class="formulation-badge">0.1% cream</span></td>
+            <td class="dose-cell">Apply once daily at night to affected areas</td>
+            <td class="notes-cell">Topical retinoid. Avoid in pregnancy — ensure effective contraception. Sun protection required. Irritation common initially.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Adapalene + Benzoyl Peroxide</div><div class="drug-generic">adapalene 0.1% / BPO 2.5%</div></td>
+            <td><span class="formulation-badge">gel (Epiduo)</span></td>
+            <td class="dose-cell">Apply once daily at night</td>
+            <td class="notes-cell">Combination first-line for moderate acne. More effective than monotherapy. Contraindicated in pregnancy.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Clindamycin + Benzoyl Peroxide</div><div class="drug-generic">clindamycin 1% / BPO 5%</div></td>
+            <td><span class="formulation-badge">gel (Duac)</span></td>
+            <td class="dose-cell">Apply once daily (morning)</td>
+            <td class="notes-cell">Combination topical antibiotic + BPO reduces resistance risk. Do not use topical clindamycin as monotherapy.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Azelaic Acid</div><div class="drug-generic">azelaic acid 20%</div></td>
+            <td><span class="formulation-badge">20% cream</span><span class="formulation-badge">15% gel</span></td>
+            <td class="dose-cell">Apply twice daily to affected areas</td>
+            <td class="notes-cell">Alternative to topical retinoids. Safe in pregnancy (2nd line). Also treats post-inflammatory hyperpigmentation.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Lymecycline</div><div class="drug-generic">lymecycline 408mg</div></td>
+            <td><span class="formulation-badge">408mg capsule</span></td>
+            <td class="dose-cell">One capsule once daily for minimum 8 weeks</td>
+            <td class="notes-cell">Oral tetracycline. First-line oral antibiotic for moderate–severe acne. Combine with topical BPO. Avoid in pregnancy.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Doxycycline</div><div class="drug-generic">doxycycline 100mg</div></td>
+            <td><span class="formulation-badge">100mg capsule</span></td>
+            <td class="dose-cell">100mg once daily for minimum 8 weeks</td>
+            <td class="notes-cell">Alternative tetracycline. Take with food to reduce GI side-effects. Photosensitivity — advise sun protection. Avoid in pregnancy.</td>
+            <td><span class="nice-ref">NICE NG198</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Co-cyprindiol</div><div class="drug-generic">cyproterone 2mg / ethinylestradiol 35mcg</div></td>
+            <td><span class="formulation-badge">tablet (Dianette)</span></td>
+            <td class="dose-cell">One tablet daily for 21 days, then 7-day break</td>
+            <td class="notes-cell">Females only. Anti-androgenic combined oral contraceptive. Use when other treatments have failed. VTE risk — assess before prescribing. Discontinue 3–4 cycles after clearance.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ ROSACEA ══ -->
+  <div id="panel-rosacea" class="condition-panel" role="tabpanel" aria-labelledby="tab-rosacea">
+    <div class="condition-header">
+      <div>
+        <div class="condition-title">Rosacea</div>
+        <div class="condition-desc">Chronic facial skin condition with erythematotelangiectatic, papulopustular, phymatous, and ocular subtypes. Treatment depends on subtype and severity.</div>
+        <div class="condition-refs">
+          <span class="ref-tag">BAD Rosacea Guidelines 2021</span>
+          <span class="ref-tag">NICE CKS Rosacea</span>
+        </div>
+      </div>
+    </div>
+    <div class="formulary-table-wrap">
+      <table aria-label="Rosacea treatments">
+        <thead><tr><th>Drug</th><th style="width:160px">Formulation</th><th style="width:200px">Dose / Regimen</th><th>Clinical Notes</th><th style="width:120px">Guideline Ref</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="drug-name">Metronidazole</div><div class="drug-generic">metronidazole 0.75%</div></td>
+            <td><span class="formulation-badge">0.75% gel</span><span class="formulation-badge">0.75% cream</span></td>
+            <td class="dose-cell">Apply twice daily to affected areas</td>
+            <td class="notes-cell">First-line topical for papulopustular rosacea. Reduces inflammation and pustules. Continue for at least 8 weeks.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Azelaic Acid</div><div class="drug-generic">azelaic acid 15%</div></td>
+            <td><span class="formulation-badge">15% gel (Finacea)</span></td>
+            <td class="dose-cell">Apply twice daily</td>
+            <td class="notes-cell">Alternative to metronidazole. Effective for papulopustules and erythema. Safe in pregnancy.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Ivermectin</div><div class="drug-generic">ivermectin 10mg/g</div></td>
+            <td><span class="formulation-badge">1% cream (Soolantra)</span></td>
+            <td class="dose-cell">Apply once daily for up to 4 months</td>
+            <td class="notes-cell">For moderate–severe papulopustular rosacea. Anti-inflammatory and anti-Demodex activity. Superior to metronidazole in some trials.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Brimonidine</div><div class="drug-generic">brimonidine 3mg/g</div></td>
+            <td><span class="formulation-badge">0.33% gel (Mirvaso)</span></td>
+            <td class="dose-cell">Apply once daily as needed (up to 5 pea-sized doses)</td>
+            <td class="notes-cell">Topical alpha-agonist for persistent facial erythema. Onset 30 minutes, duration 8–12 hours. Not for papulopustular subtype alone.</td>
+            <td><span class="nice-ref">NICE CKS</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Doxycycline</div><div class="drug-generic">doxycycline 40mg (sub-antimicrobial)</div></td>
+            <td><span class="formulation-badge">40mg MR capsule (Efracea)</span></td>
+            <td class="dose-cell">40mg once daily for up to 16 weeks</td>
+            <td class="notes-cell">Sub-antimicrobial dose — anti-inflammatory, not antibiotic effect. First-line oral for moderate–severe papulopustular rosacea.</td>
+            <td><span class="nice-ref">BAD 2021</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ ECZEMA ══ -->
+  <div id="panel-eczema" class="condition-panel" role="tabpanel" aria-labelledby="tab-eczema">
+    <div class="condition-header">
+      <div>
+        <div class="condition-title">Eczema (Atopic Dermatitis)</div>
+        <div class="condition-desc">Chronic inflammatory skin condition. Management is stepwise: emollients form the basis of all treatment; topical corticosteroids and calcineurin inhibitors added based on severity.</div>
+        <div class="condition-refs">
+          <span class="ref-tag">NICE NG190</span>
+          <span class="ref-tag">BAD Atopic Eczema Guidelines</span>
+        </div>
+      </div>
+    </div>
+    <div class="formulary-table-wrap">
+      <table aria-label="Eczema treatments">
+        <thead><tr><th>Drug</th><th style="width:160px">Formulation</th><th style="width:200px">Dose / Regimen</th><th>Clinical Notes</th><th style="width:120px">Guideline Ref</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="drug-name">Emollients</div><div class="drug-generic">various (e.g. Epaderm, Diprobase, Cetraben)</div></td>
+            <td><span class="formulation-badge">cream</span><span class="formulation-badge">ointment</span><span class="formulation-badge">lotion</span></td>
+            <td class="dose-cell">Apply liberally and frequently — at least twice daily and after washing</td>
+            <td class="notes-cell">Cornerstone of all eczema management. Choice based on patient preference. Ointments more occlusive; creams for daytime use.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Hydrocortisone</div><div class="drug-generic">hydrocortisone 1%</div></td>
+            <td><span class="formulation-badge">1% cream</span><span class="formulation-badge">1% ointment</span></td>
+            <td class="dose-cell">Apply once or twice daily to affected areas; use sparingly</td>
+            <td class="notes-cell">Mild TCS. First-line for mild eczema and face/flexures/genitalia. Not for prolonged use. Safe for children.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Betamethasone Valerate</div><div class="drug-generic">betamethasone valerate 0.1%</div></td>
+            <td><span class="formulation-badge">0.1% cream</span><span class="formulation-badge">0.1% ointment</span></td>
+            <td class="dose-cell">Apply once daily to affected areas for up to 4 weeks</td>
+            <td class="notes-cell">Moderately potent TCS. For moderate eczema on body (not face). Avoid prolonged use; risk of skin thinning.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Mometasone Furoate</div><div class="drug-generic">mometasone furoate 0.1%</div></td>
+            <td><span class="formulation-badge">0.1% cream</span><span class="formulation-badge">0.1% ointment</span></td>
+            <td class="dose-cell">Apply once daily to affected areas</td>
+            <td class="notes-cell">Potent TCS. Once-daily dosing improves adherence. Avoid face. For moderate–severe body eczema.</td>
+            <td><span class="nice-ref">BAD Guidelines</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Tacrolimus</div><div class="drug-generic">tacrolimus 0.1%</div></td>
+            <td><span class="formulation-badge">0.1% ointment (Protopic)</span></td>
+            <td class="dose-cell">Apply twice daily; reduce to once daily when controlled</td>
+            <td class="notes-cell">Topical calcineurin inhibitor. Second-line; steroid-sparing. Suitable for face and flexures. Not for infected eczema. Burning sensation initially common.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Pimecrolimus</div><div class="drug-generic">pimecrolimus 1%</div></td>
+            <td><span class="formulation-badge">1% cream (Elidel)</span></td>
+            <td class="dose-cell">Apply twice daily to affected areas</td>
+            <td class="notes-cell">Mild–moderate calcineurin inhibitor. Suitable for sensitive areas including face. Less effective than tacrolimus for severe disease.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Chlorphenamine</div><div class="drug-generic">chlorphenamine maleate 4mg</div></td>
+            <td><span class="formulation-badge">4mg tablet</span><span class="formulation-badge">2mg/5ml syrup</span></td>
+            <td class="dose-cell">4mg at night (sedating); up to 4 times daily if needed</td>
+            <td class="notes-cell">Sedating antihistamine for nocturnal itch. Not for primary eczema control. Caution in elderly. Avoid driving while sedated.</td>
+            <td><span class="nice-ref">NICE NG190</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ PSORIASIS ══ -->
+  <div id="panel-psoriasis" class="condition-panel" role="tabpanel" aria-labelledby="tab-psoriasis">
+    <div class="condition-header">
+      <div>
+        <div class="condition-title">Psoriasis</div>
+        <div class="condition-desc">Chronic immune-mediated inflammatory skin condition. This formulary covers mild–moderate plaque psoriasis manageable in a remote private dermatology setting. Severe, erythrodermic, or pustular psoriasis requires face-to-face specialist care.</div>
+        <div class="condition-refs">
+          <span class="ref-tag">NICE NG137</span>
+          <span class="ref-tag">BAD Psoriasis Guidelines</span>
+        </div>
+      </div>
+    </div>
+    <div class="formulary-table-wrap">
+      <table aria-label="Psoriasis treatments">
+        <thead><tr><th>Drug</th><th style="width:160px">Formulation</th><th style="width:200px">Dose / Regimen</th><th>Clinical Notes</th><th style="width:120px">Guideline Ref</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="drug-name">Betamethasone + Calcipotriol</div><div class="drug-generic">betamethasone 0.05% / calcipotriol 50mcg/g</div></td>
+            <td><span class="formulation-badge">gel (Enstilar / Dovobet)</span><span class="formulation-badge">ointment</span></td>
+            <td class="dose-cell">Apply once daily for up to 4 weeks; may repeat as maintenance</td>
+            <td class="notes-cell">First-line combination therapy for plaque psoriasis. More effective than either agent alone. Avoid face and flexures. Foam aerosol (Enstilar) preferred for scalp and hair-bearing areas.</td>
+            <td><span class="nice-ref">NICE NG137</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Calcipotriol</div><div class="drug-generic">calcipotriol 50mcg/g</div></td>
+            <td><span class="formulation-badge">ointment</span><span class="formulation-badge">cream</span><span class="formulation-badge">scalp solution</span></td>
+            <td class="dose-cell">Apply twice daily; max 100g/week</td>
+            <td class="notes-cell">Vitamin D analogue. Suitable for long-term maintenance. Avoid face. Irritant — wash hands after application. Max weekly dose important.</td>
+            <td><span class="nice-ref">NICE NG137</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Coal Tar</div><div class="drug-generic">coal tar 5% / various strengths</div></td>
+            <td><span class="formulation-badge">shampoo</span><span class="formulation-badge">cream</span><span class="formulation-badge">paste</span></td>
+            <td class="dose-cell">Apply as directed; shampoo 2–3 times per week</td>
+            <td class="notes-cell">For scalp psoriasis and chronic plaque. Malodorous — affects adherence. Stains fabric and skin.</td>
+            <td><span class="nice-ref">BAD Guidelines</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Salicylic Acid</div><div class="drug-generic">salicylic acid 2–6%</div></td>
+            <td><span class="formulation-badge">2% cream</span><span class="formulation-badge">6% ointment</span></td>
+            <td class="dose-cell">Apply to scaly plaques; use prior to other topicals to aid penetration</td>
+            <td class="notes-cell">Keratolytic. Reduces scaling and improves penetration of other topicals. Not a primary anti-psoriatic agent.</td>
+            <td><span class="nice-ref">BAD Guidelines</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Mometasone Furoate</div><div class="drug-generic">mometasone furoate 0.1%</div></td>
+            <td><span class="formulation-badge">0.1% cream</span><span class="formulation-badge">0.1% ointment</span></td>
+            <td class="dose-cell">Apply once daily; short-term use</td>
+            <td class="notes-cell">Potent TCS for psoriasis flares on body. Avoid continuous use — risk of rebound. Do not use on face or flexures.</td>
+            <td><span class="nice-ref">NICE NG137</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══ SEBORRHOEIC DERMATITIS ══ -->
+  <div id="panel-sebderm" class="condition-panel" role="tabpanel" aria-labelledby="tab-sebderm">
+    <div class="condition-header">
+      <div>
+        <div class="condition-title">Seborrhoeic Dermatitis</div>
+        <div class="condition-desc">Chronic inflammatory condition affecting sebaceous gland-rich areas (scalp, face, chest). Associated with Malassezia yeast. Tends to relapse and remit — treatment is primarily maintenance-based.</div>
+        <div class="condition-refs">
+          <span class="ref-tag">BAD Seborrhoeic Dermatitis Guidelines</span>
+          <span class="ref-tag">NICE CKS Seborrhoeic Dermatitis</span>
+        </div>
+      </div>
+    </div>
+    <div class="formulary-table-wrap">
+      <table aria-label="Seborrhoeic Dermatitis treatments">
+        <thead><tr><th>Drug</th><th style="width:160px">Formulation</th><th style="width:200px">Dose / Regimen</th><th>Clinical Notes</th><th style="width:120px">Guideline Ref</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="drug-name">Ketoconazole</div><div class="drug-generic">ketoconazole 2%</div></td>
+            <td><span class="formulation-badge">2% shampoo</span><span class="formulation-badge">2% cream</span></td>
+            <td class="dose-cell">Shampoo: twice weekly for 4 weeks, then once weekly maintenance. Cream: apply once or twice daily.</td>
+            <td class="notes-cell">First-line antifungal. Effective against Malassezia. Shampoo for scalp; cream for face and body. Maintenance therapy prevents relapse.</td>
+            <td><span class="nice-ref">NICE CKS</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Selenium Sulphide</div><div class="drug-generic">selenium sulphide 2.5%</div></td>
+            <td><span class="formulation-badge">2.5% shampoo</span></td>
+            <td class="dose-cell">Apply to scalp, leave 2–3 minutes, rinse; twice weekly for 2 weeks then weekly</td>
+            <td class="notes-cell">Antifungal and cytostatic. Alternative to ketoconazole shampoo. Can discolour light hair — advise patient.</td>
+            <td><span class="nice-ref">BAD Guidelines</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Hydrocortisone</div><div class="drug-generic">hydrocortisone 1%</div></td>
+            <td><span class="formulation-badge">1% cream</span></td>
+            <td class="dose-cell">Apply twice daily for up to 2 weeks to reduce inflammation</td>
+            <td class="notes-cell">Mild TCS for acute flares on face or body. Not for long-term use. Do not use as monotherapy — combine with antifungal where possible.</td>
+            <td><span class="nice-ref">NICE CKS</span></td>
+          </tr>
+          <tr>
+            <td><div class="drug-name">Ketoconazole + Hydrocortisone</div><div class="drug-generic">ketoconazole 2% / hydrocortisone 1%</div></td>
+            <td><span class="formulation-badge">cream (Daktacort)</span></td>
+            <td class="dose-cell">Apply twice daily for up to 2 weeks</td>
+            <td class="notes-cell">Combination antifungal + mild TCS for inflamed seborrhoeic dermatitis on face and body. Short-term use only.</td>
+            <td><span class="nice-ref">BAD Guidelines</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div class="formulary-footer-note" role="note">
+    <i data-lucide="info" style="width:18px;height:18px;flex-shrink:0;color:var(--lh-mid-grey);margin-top:1px" aria-hidden="true"></i>
+    <div>
+      <strong>Clinical Judgement and Disclaimer:</strong> This formulary represents approved treatment options for Lyvia Health Ltd and is aligned to current NICE guidelines and BAD recommendations at the time of publication. It does not replace individual clinical assessment. The prescribing clinician retains full responsibility for determining the appropriateness of any treatment for an individual patient, including reviewing contraindications, drug interactions, and patient-specific risk factors. This formulary is subject to annual review. For treatments outside this formulary or where specialist input is required, the clinician should refer appropriately.
+    </div>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  <strong>Lyvia Health Ltd</strong> &nbsp;·&nbsp; Medicines Formulary LH-FM-001 v1.0 &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <em>Private &amp; Confidential</em>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  function showTab(id, btn) {
+    document.querySelectorAll('.condition-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    document.getElementById('panel-' + id).classList.add('active');
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+  }
+</script>
+</body>
+</html>

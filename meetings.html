@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meeting Logs | Lyvia Health Governance Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    :root {
+      --lh-teal:#1A6B6B;--lh-teal-dark:#124E4E;--lh-teal-light:#E8F4F4;
+      --lh-gold:#C9973A;--lh-gold-light:#FDF3E3;--lh-charcoal:#2C2C2C;
+      --lh-mid-grey:#6B7280;--lh-light-grey:#F3F4F6;--lh-white:#FFFFFF;
+      --lh-danger:#B91C1C;--lh-amber:#D97706;--lh-green:#15803D;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--lh-light-grey);color:var(--lh-charcoal);min-height:100vh;display:flex;flex-direction:column}
+
+    /* NAV */
+    .nav{background:var(--lh-teal-dark);padding:0 2.5rem;display:flex;align-items:center;justify-content:space-between;height:66px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+    .lh-logo{display:flex;align-items:center;gap:.8rem;text-decoration:none}
+    .lh-logo__mark{width:38px;height:38px;background:var(--lh-gold);color:var(--lh-teal-dark);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;flex-shrink:0}
+    .lh-logo__name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--lh-white);line-height:1.1}
+    .lh-logo__sub{font-size:.63rem;color:rgba(255,255,255,.55);letter-spacing:.12em;text-transform:uppercase}
+    .nav-center{display:flex;align-items:center;gap:.2rem}
+    .nav-center a{color:rgba(255,255,255,.75);text-decoration:none;padding:.45rem .9rem;border-radius:5px;font-size:.84rem;font-weight:500;transition:all .15s}
+    .nav-center a:hover{background:rgba(255,255,255,.1);color:var(--lh-white)}
+    .nav-center a.active{color:var(--lh-white);border-bottom:2px solid var(--lh-gold);padding-bottom:calc(.45rem - 2px)}
+    .cqc-badge{background:rgba(232,244,244,.15);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.25);border-radius:4px;font-size:.67rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:5px 11px;white-space:nowrap}
+
+    /* HERO */
+    .hero{background:linear-gradient(140deg,var(--lh-teal-dark) 0%,var(--lh-teal) 100%);color:var(--lh-white);padding:2.8rem 2.5rem 2.2rem;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;top:-50px;right:-50px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.04);pointer-events:none}
+    .hero-inner{max-width:1200px;margin:0 auto;position:relative}
+    .hero-breadcrumb{font-size:.78rem;opacity:.65;margin-bottom:.5rem}
+    .hero-breadcrumb a{color:inherit;text-decoration:none}
+    .hero-breadcrumb a:hover{text-decoration:underline}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:600;line-height:1.15;margin-bottom:.5rem}
+    .hero-sub{font-size:.95rem;opacity:.82;font-weight:300;max-width:620px;line-height:1.6;margin-bottom:1.5rem}
+    .hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap}
+    .hero-stat span:first-child{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;opacity:.6;display:block}
+    .hero-stat span:last-child{font-size:.92rem;font-weight:500}
+
+    /* MAIN */
+    main{flex:1;max-width:1200px;width:100%;margin:0 auto;padding:2rem 2.5rem}
+
+    /* TOOLBAR */
+    .toolbar{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);padding:1.1rem 1.4rem;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+    .filter-group{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+    .filter-btn{padding:.45rem .9rem;border-radius:20px;border:1px solid #D1D5DB;background:var(--lh-white);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;color:var(--lh-mid-grey);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .filter-btn:hover{border-color:var(--lh-teal);color:var(--lh-teal)}
+    .filter-btn.active{background:var(--lh-teal);border-color:var(--lh-teal);color:var(--lh-white)}
+    .result-count{font-size:.8rem;color:var(--lh-mid-grey);margin-left:auto;white-space:nowrap}
+
+    /* MEETING CARD */
+    .meeting-card{background:var(--lh-white);border-radius:10px;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);margin-bottom:1.25rem;overflow:hidden;transition:box-shadow .2s}
+    .meeting-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.09)}
+    .meeting-card.hidden{display:none}
+
+    .meeting-card__header{padding:1.25rem 1.5rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--lh-light-grey);cursor:pointer}
+    .meeting-card__header:hover .toggle-icon{color:var(--lh-teal)}
+    .meeting-card__left{flex:1}
+    .meeting-card__type-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem;flex-wrap:wrap}
+    .meeting-type-badge{display:inline-flex;align-items:center;gap:.3rem;font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:12px;white-space:nowrap}
+    .badge-cg   {background:#EDE9FE;color:#6D28D9}
+    .badge-safe {background:#FEE2E2;color:#B91C1C}
+    .badge-ig   {background:#DBEAFE;color:#1D4ED8}
+    .badge-adhoc{background:var(--lh-gold-light);color:#92400E}
+    .meeting-card__title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:600;color:var(--lh-teal-dark);line-height:1.2}
+    .meeting-card__meta{display:flex;gap:1.25rem;margin-top:.5rem;flex-wrap:wrap}
+    .meeting-meta-item{display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--lh-mid-grey)}
+    .meeting-meta-item i{width:13px;height:13px;flex-shrink:0}
+    .meeting-card__right{display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex-shrink:0}
+    .toggle-icon{color:var(--lh-mid-grey);transition:transform .2s,color .2s}
+    .meeting-card.open .toggle-icon{transform:rotate(180deg)}
+
+    /* MEETING BODY */
+    .meeting-card__body{display:none;padding:1.25rem 1.5rem}
+    .meeting-card.open .meeting-card__body{display:block}
+    .body-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+
+    .body-section{margin-bottom:1.25rem}
+    .body-section:last-child{margin-bottom:0}
+    .body-section__title{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--lh-mid-grey);font-weight:600;margin-bottom:.65rem;display:flex;align-items:center;gap:.4rem}
+    .body-section__title i{width:13px;height:13px}
+
+    /* AGENDA LIST */
+    .agenda-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+    .agenda-item{display:flex;gap:.65rem;align-items:flex-start;font-size:.85rem;line-height:1.5}
+    .agenda-num{flex-shrink:0;width:20px;height:20px;background:var(--lh-teal-light);color:var(--lh-teal-dark);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;margin-top:1px}
+
+    /* DECISIONS LIST */
+    .decisions-list{list-style:none;display:flex;flex-direction:column;gap:.45rem}
+    .decision-item{display:flex;gap:.65rem;align-items:flex-start;font-size:.85rem;line-height:1.5}
+    .decision-check{flex-shrink:0;width:18px;height:18px;color:var(--lh-green);margin-top:2px}
+
+    /* ACTIONS TABLE */
+    .actions-table{width:100%;border-collapse:collapse;font-size:.82rem}
+    .actions-table th{background:var(--lh-light-grey);color:var(--lh-mid-grey);text-align:left;padding:.5rem .75rem;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #E5E7EB}
+    .actions-table td{padding:.55rem .75rem;border-bottom:1px solid #F3F4F6;vertical-align:middle}
+    .actions-table tr:last-child td{border-bottom:none}
+    .action-owner{font-weight:500;white-space:nowrap}
+    .action-status{display:inline-flex;align-items:center;gap:.25rem;padding:2px 9px;border-radius:10px;font-size:.72rem;font-weight:600;white-space:nowrap}
+    .status-complete{background:#DCFCE7;color:var(--lh-green)}
+    .status-progress{background:#DBEAFE;color:#1D4ED8}
+    .status-pending {background:#FEF3C7;color:var(--lh-amber)}
+    .status-overdue {background:#FEE2E2;color:var(--lh-danger)}
+
+    /* ADD MEETING BOX */
+    .add-meeting-box{background:var(--lh-white);border:2px dashed #D1D5DB;border-radius:10px;padding:2rem;text-align:center;margin-top:1.5rem;transition:border-color .2s}
+    .add-meeting-box:hover{border-color:var(--lh-teal)}
+    .add-meeting-box h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--lh-teal-dark);margin-bottom:.4rem}
+    .add-meeting-box p{font-size:.84rem;color:var(--lh-mid-grey);max-width:500px;margin:0 auto .1rem;line-height:1.6}
+
+    /* NO RESULTS */
+    .no-results{text-align:center;padding:3rem 2rem;color:var(--lh-mid-grey);font-size:.9rem;display:none}
+
+    /* SUMMARY BAR */
+    .summary-bar{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+    .summary-pill{background:var(--lh-white);border-radius:8px;border:1px solid rgba(0,0,0,.07);padding:.65rem 1.1rem;display:flex;align-items:center;gap:.5rem;font-size:.82rem;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+    .summary-pill strong{font-size:1.1rem;font-family:'Cormorant Garamond',serif}
+    .summary-pill.teal strong{color:var(--lh-teal)}
+    .summary-pill.green strong{color:var(--lh-green)}
+    .summary-pill.purple strong{color:#6D28D9}
+
+    /* FOOTER */
+    footer{background:var(--lh-charcoal);color:rgba(255,255,255,.45);text-align:center;font-size:.74rem;padding:1.1rem 2.5rem;margin-top:auto;letter-spacing:.02em}
+    footer strong{color:rgba(255,255,255,.75)}
+
+    @media(max-width:900px){
+      .hero h1{font-size:1.8rem}.nav-center{display:none}main{padding:1.5rem}
+      .body-grid{grid-template-columns:1fr}
+      .meeting-card__header{flex-direction:column}
+      .meeting-card__right{flex-direction:row;align-items:center}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <a href="index.html" class="lh-logo">
+    <div class="lh-logo__mark" aria-hidden="true">L</div>
+    <div>
+      <div class="lh-logo__name">Lyvia Health</div>
+      <div class="lh-logo__sub">Governance Hub</div>
+    </div>
+  </a>
+  <div class="nav-center">
+    <a href="index.html">Home</a>
+    <a href="policies.html">Policies</a>
+    <a href="formulary.html">Formulary</a>
+    <a href="meetings.html" class="active">Meeting Logs</a>
+    <a href="contacts.html">Contacts</a>
+  </div>
+  <span class="cqc-badge">CQC Registration In Progress</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-breadcrumb"><a href="index.html">Home</a> › Meeting Logs</div>
+    <h1>Governance Meeting Logs</h1>
+    <p class="hero-sub">Records of all clinical governance, safeguarding, and information governance meetings held by Lyvia Health Ltd. Includes agenda items, decisions made, and action logs with owners and deadlines.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span>Meetings Recorded</span><span>4</span></div>
+      <div class="hero-stat"><span>Meeting Types</span><span>Clinical Governance · Safeguarding · IG</span></div>
+      <div class="hero-stat"><span>Last Meeting</span><span>March 2025</span></div>
+      <div class="hero-stat"><span>Next Scheduled</span><span>June 2025</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- SUMMARY BAR -->
+  <div class="summary-bar">
+    <div class="summary-pill teal">
+      <i data-lucide="clipboard-list" style="width:16px;height:16px;color:var(--lh-teal)" aria-hidden="true"></i>
+      <strong>4</strong> Meetings Logged
+    </div>
+    <div class="summary-pill green">
+      <i data-lucide="check-circle" style="width:16px;height:16px;color:var(--lh-green)" aria-hidden="true"></i>
+      <strong>8</strong> Actions Complete
+    </div>
+    <div class="summary-pill purple">
+      <i data-lucide="circle-dot" style="width:16px;height:16px;color:#6D28D9" aria-hidden="true"></i>
+      <strong>3</strong> Actions In Progress
+    </div>
+    <div class="summary-pill" style="margin-left:auto">
+      <i data-lucide="calendar" style="width:16px;height:16px;color:var(--lh-mid-grey)" aria-hidden="true"></i>
+      Next meeting: <strong style="margin-left:.25rem">June 2025</strong>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="filter-group" role="group" aria-label="Filter by meeting type">
+      <span style="font-size:.78rem;color:var(--lh-mid-grey);font-weight:500">Type:</span>
+      <button class="filter-btn active" onclick="filterMeetings('all',this)">All</button>
+      <button class="filter-btn" onclick="filterMeetings('cg',this)">Clinical Governance</button>
+      <button class="filter-btn" onclick="filterMeetings('safe',this)">Safeguarding</button>
+      <button class="filter-btn" onclick="filterMeetings('ig',this)">Information Governance</button>
+      <button class="filter-btn" onclick="filterMeetings('adhoc',this)">Ad Hoc</button>
+    </div>
+    <span class="result-count" id="resultCount" aria-live="polite">Showing 4 of 4</span>
+  </div>
+
+  <div class="no-results" id="noResults" role="status">No meetings match this filter.</div>
+
+  <!-- ══ MEETING 1: CG Q1 2025 ══ -->
+  <article class="meeting-card open" data-type="cg" aria-label="Clinical Governance Meeting — March 2025">
+    <div class="meeting-card__header" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="true">
+      <div class="meeting-card__left">
+        <div class="meeting-card__type-row">
+          <span class="meeting-type-badge badge-cg"><i data-lucide="shield-check" style="width:11px;height:11px" aria-hidden="true"></i> Clinical Governance</span>
+          <span style="font-size:.75rem;color:var(--lh-mid-grey)">Q1 2025</span>
+        </div>
+        <div class="meeting-card__title">Quarterly Clinical Governance Meeting</div>
+        <div class="meeting-card__meta">
+          <div class="meeting-meta-item"><i data-lucide="calendar" aria-hidden="true"></i>27 March 2025</div>
+          <div class="meeting-meta-item"><i data-lucide="video" aria-hidden="true"></i>Remote (Semble)</div>
+          <div class="meeting-meta-item"><i data-lucide="users" aria-hidden="true"></i>Dr NK Hussain · Dr M Khan</div>
+        </div>
+      </div>
+      <div class="meeting-card__right">
+        <i data-lucide="chevron-down" class="toggle-icon" style="width:20px;height:20px" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="meeting-card__body">
+      <div class="body-grid">
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="list" aria-hidden="true"></i>Agenda Items</div>
+            <ul class="agenda-list">
+              <li class="agenda-item"><span class="agenda-num">1</span><span>Review of incident log and SEA register — no serious events since service launch</span></li>
+              <li class="agenda-item"><span class="agenda-num">2</span><span>Policy framework review — confirmation of all 42 documents authored and version-controlled</span></li>
+              <li class="agenda-item"><span class="agenda-num">3</span><span>Medicines formulary (LH-FM-001) — sign-off and publication to governance hub</span></li>
+              <li class="agenda-item"><span class="agenda-num">4</span><span>Training matrix review — both clinicians confirmed compliant with all mandatory modules</span></li>
+              <li class="agenda-item"><span class="agenda-num">5</span><span>CQC registration progress update — application in progress</span></li>
+              <li class="agenda-item"><span class="agenda-num">6</span><span>Review of urgent cancer referral pathway — 2WW GP letter process confirmed</span></li>
+            </ul>
+          </div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="check-square" aria-hidden="true"></i>Decisions Made</div>
+            <ul class="decisions-list">
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>No SEAs or reportable incidents identified. Incident log confirmed clear.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>All 42 policy documents approved and published to governance hub at Version 1.0.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Medicines formulary LH-FM-001 v1.0 approved and published.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Annual policy review date set for March 2026. Reminder to be added to governance calendar.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Next quarterly clinical governance meeting scheduled for June 2025.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="clipboard" aria-hidden="true"></i>Action Log</div>
+            <table class="actions-table">
+              <thead><tr><th>Action</th><th>Owner</th><th>Deadline</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Publish governance hub to GitHub Pages</td><td class="action-owner">Dr NK Hussain</td><td>April 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Add annual review reminder to governance calendar (March 2026)</td><td class="action-owner">Dr NK Hussain</td><td>April 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Confirm next meeting date with Dr M Khan</td><td class="action-owner">Dr M Khan</td><td>April 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Review SEA log ahead of next quarterly meeting</td><td class="action-owner">Dr NK Hussain</td><td>June 2025</td><td><span class="action-status status-progress">In Progress</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ══ MEETING 2: SAFEGUARDING Q1 2025 ══ -->
+  <article class="meeting-card" data-type="safe" aria-label="Safeguarding Review — February 2025">
+    <div class="meeting-card__header" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false">
+      <div class="meeting-card__left">
+        <div class="meeting-card__type-row">
+          <span class="meeting-type-badge badge-safe"><i data-lucide="shield" style="width:11px;height:11px" aria-hidden="true"></i> Safeguarding</span>
+          <span style="font-size:.75rem;color:var(--lh-mid-grey)">Q1 2025</span>
+        </div>
+        <div class="meeting-card__title">Safeguarding Lead Review</div>
+        <div class="meeting-card__meta">
+          <div class="meeting-meta-item"><i data-lucide="calendar" aria-hidden="true"></i>14 February 2025</div>
+          <div class="meeting-meta-item"><i data-lucide="video" aria-hidden="true"></i>Remote (Semble)</div>
+          <div class="meeting-meta-item"><i data-lucide="users" aria-hidden="true"></i>Dr NK Hussain · Dr M Khan</div>
+        </div>
+      </div>
+      <div class="meeting-card__right">
+        <i data-lucide="chevron-down" class="toggle-icon" style="width:20px;height:20px" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="meeting-card__body">
+      <div class="body-grid">
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="list" aria-hidden="true"></i>Agenda Items</div>
+            <ul class="agenda-list">
+              <li class="agenda-item"><span class="agenda-num">1</span><span>Review of safeguarding policy (LH-001) and adult safeguarding procedures</span></li>
+              <li class="agenda-item"><span class="agenda-num">2</span><span>Safeguarding referral log review — no referrals made since launch</span></li>
+              <li class="agenda-item"><span class="agenda-num">3</span><span>Under-18 exclusion control — confirmation of Semble DOB validation as technical safeguard</span></li>
+              <li class="agenda-item"><span class="agenda-num">4</span><span>MCA policy (LH-002) review — mental capacity considerations for remote consultations</span></li>
+              <li class="agenda-item"><span class="agenda-num">5</span><span>Safeguarding training compliance — confirmation of both clinicians' training records</span></li>
+            </ul>
+          </div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="check-square" aria-hidden="true"></i>Decisions Made</div>
+            <ul class="decisions-list">
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Safeguarding policy confirmed appropriate for adults-only remote service. No children safeguarding policy required.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Semble date-of-birth validation confirmed as primary technical control for under-18 exclusion.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Both clinicians confirmed up to date with adult safeguarding Level 3 training.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>No safeguarding concerns or referrals identified in current period.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="clipboard" aria-hidden="true"></i>Action Log</div>
+            <table class="actions-table">
+              <thead><tr><th>Action</th><th>Owner</th><th>Deadline</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Document Semble DOB control in OPT-004 (Patient Registration Policy)</td><td class="action-owner">Dr NK Hussain</td><td>March 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Add safeguarding log to Governance Tracker (Google Sheets)</td><td class="action-owner">Dr M Khan</td><td>March 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Schedule next safeguarding review for Q3 2025</td><td class="action-owner">Dr NK Hussain</td><td>March 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ══ MEETING 3: IG REVIEW Q4 2024 ══ -->
+  <article class="meeting-card" data-type="ig" aria-label="Information Governance Review — January 2025">
+    <div class="meeting-card__header" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false">
+      <div class="meeting-card__left">
+        <div class="meeting-card__type-row">
+          <span class="meeting-type-badge badge-ig"><i data-lucide="lock" style="width:11px;height:11px" aria-hidden="true"></i> Information Governance</span>
+          <span style="font-size:.75rem;color:var(--lh-mid-grey)">Q4 2024 / Q1 2025</span>
+        </div>
+        <div class="meeting-card__title">Information Governance and DPIA Review</div>
+        <div class="meeting-card__meta">
+          <div class="meeting-meta-item"><i data-lucide="calendar" aria-hidden="true"></i>20 January 2025</div>
+          <div class="meeting-meta-item"><i data-lucide="video" aria-hidden="true"></i>Remote (Semble)</div>
+          <div class="meeting-meta-item"><i data-lucide="users" aria-hidden="true"></i>Dr NK Hussain · Dr M Khan</div>
+        </div>
+      </div>
+      <div class="meeting-card__right">
+        <i data-lucide="chevron-down" class="toggle-icon" style="width:20px;height:20px" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="meeting-card__body">
+      <div class="body-grid">
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="list" aria-hidden="true"></i>Agenda Items</div>
+            <ul class="agenda-list">
+              <li class="agenda-item"><span class="agenda-num">1</span><span>Review of all five DPIAs — Semble, Google Workspace, Clinical Photography, Remote ID Verification, Patient Registration</span></li>
+              <li class="agenda-item"><span class="agenda-num">2</span><span>External DPO appointment confirmation — Clinical DPO, Hornbeam Business Park, Harrogate</span></li>
+              <li class="agenda-item"><span class="agenda-num">3</span><span>UK GDPR compliance status — DP policy series (DP-001 to DP-008) reviewed</span></li>
+              <li class="agenda-item"><span class="agenda-num">4</span><span>Data breach response procedure — DP-005 walk-through and ICO notification threshold discussion</span></li>
+              <li class="agenda-item"><span class="agenda-num">5</span><span>Caldicott Guardian role — Dr M Khan confirmed as Caldicott Guardian</span></li>
+            </ul>
+          </div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="check-square" aria-hidden="true"></i>Decisions Made</div>
+            <ul class="decisions-list">
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>All five DPIAs approved and published. Standing DPIA placeholder agreed for any future AI/ML tool deployment.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Clinical DPO appointment confirmed and documented in key contacts register.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Dr M Khan confirmed as Caldicott Guardian with IG Lead responsibility.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Data breach response procedure rehearsed — both clinicians familiar with 72-hour ICO notification requirement.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="clipboard" aria-hidden="true"></i>Action Log</div>
+            <table class="actions-table">
+              <thead><tr><th>Action</th><th>Owner</th><th>Deadline</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Publish all five DPIAs to governance hub</td><td class="action-owner">Dr NK Hussain</td><td>February 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Add DPO contact details to governance hub Contacts page</td><td class="action-owner">Dr M Khan</td><td>February 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Create standing DPIA placeholder for future AI/ML tools</td><td class="action-owner">Dr NK Hussain</td><td>March 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Annual IG review to be scheduled for January 2026</td><td class="action-owner">Dr M Khan</td><td>June 2025</td><td><span class="action-status status-progress">In Progress</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ══ MEETING 4: SETUP AD HOC ══ -->
+  <article class="meeting-card" data-type="adhoc" aria-label="Ad Hoc Meeting — December 2024">
+    <div class="meeting-card__header" onclick="toggleCard(this)" role="button" tabindex="0" aria-expanded="false">
+      <div class="meeting-card__left">
+        <div class="meeting-card__type-row">
+          <span class="meeting-type-badge badge-adhoc"><i data-lucide="zap" style="width:11px;height:11px" aria-hidden="true"></i> Ad Hoc</span>
+          <span style="font-size:.75rem;color:var(--lh-mid-grey)">Service Setup</span>
+        </div>
+        <div class="meeting-card__title">Governance Framework Initiation Meeting</div>
+        <div class="meeting-card__meta">
+          <div class="meeting-meta-item"><i data-lucide="calendar" aria-hidden="true"></i>10 December 2024</div>
+          <div class="meeting-meta-item"><i data-lucide="video" aria-hidden="true"></i>Remote (Semble)</div>
+          <div class="meeting-meta-item"><i data-lucide="users" aria-hidden="true"></i>Dr NK Hussain · Dr M Khan</div>
+        </div>
+      </div>
+      <div class="meeting-card__right">
+        <i data-lucide="chevron-down" class="toggle-icon" style="width:20px;height:20px" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="meeting-card__body">
+      <div class="body-grid">
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="list" aria-hidden="true"></i>Agenda Items</div>
+            <ul class="agenda-list">
+              <li class="agenda-item"><span class="agenda-num">1</span><span>Assignment of governance roles — Nominated Individual, Registered Manager, SIRO, Safeguarding Lead, IG Lead, Caldicott Guardian</span></li>
+              <li class="agenda-item"><span class="agenda-num">2</span><span>Agreement of policy series structure (CQS, DP, OPT, OP, LH, LH-DPIA, LH-FM)</span></li>
+              <li class="agenda-item"><span class="agenda-num">3</span><span>CQC registration planning and timeline</span></li>
+              <li class="agenda-item"><span class="agenda-num">4</span><span>Semble as sole clinical platform — confirmation of video calling, records, and prescribing workflow</span></li>
+              <li class="agenda-item"><span class="agenda-num">5</span><span>External DPO procurement</span></li>
+              <li class="agenda-item"><span class="agenda-num">6</span><span>Governance meeting schedule — quarterly CG, annual safeguarding and IG reviews agreed</span></li>
+            </ul>
+          </div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="check-square" aria-hidden="true"></i>Decisions Made</div>
+            <ul class="decisions-list">
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Dr NK Hussain appointed Nominated Individual, SIRO, and Safeguarding Lead.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Dr M Khan appointed Registered Manager, IG Lead, and Caldicott Guardian.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Seven-series policy structure agreed and document authorship assigned to Dr NK Hussain.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Semble confirmed as sole clinical platform for all consultations, records, and prescribing.</span></li>
+              <li class="decision-item"><i data-lucide="check-circle" class="decision-check" aria-hidden="true"></i><span>Service scope agreed: adults 18+ only, private prescriptions, no FP10/EPS, no controlled drugs, no oral isotretinoin.</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="body-section">
+            <div class="body-section__title"><i data-lucide="clipboard" aria-hidden="true"></i>Action Log</div>
+            <table class="actions-table">
+              <thead><tr><th>Action</th><th>Owner</th><th>Deadline</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>Begin drafting full policy suite across all seven series</td><td class="action-owner">Dr NK Hussain</td><td>February 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Appoint external DPO and obtain contract</td><td class="action-owner">Dr M Khan</td><td>January 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Register with ICO as data controller</td><td class="action-owner">Dr M Khan</td><td>January 2025</td><td><span class="action-status status-complete">Complete</span></td></tr>
+                <tr><td>Submit CQC registration application</td><td class="action-owner">Dr NK Hussain</td><td>March 2025</td><td><span class="action-status status-progress">In Progress</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ADD NEW MEETING BOX -->
+  <div class="add-meeting-box" role="region" aria-label="Add a new meeting record">
+    <i data-lucide="plus-circle" style="width:32px;height:32px;color:var(--lh-teal);margin-bottom:.75rem" aria-hidden="true"></i>
+    <h3>Adding a New Meeting Record</h3>
+    <p>To add a new meeting, ask Claude to update this page with the meeting date, type, attendees, agenda items, decisions, and actions. A new card will be added at the top of the list.</p>
+    <p style="margin-top:.6rem;font-size:.8rem;color:var(--lh-mid-grey)">Meetings should be logged within 5 working days of occurrence.</p>
+  </div>
+
+</main>
+
+<footer role="contentinfo">
+  <strong>Lyvia Health Ltd</strong> &nbsp;·&nbsp; Governance Meeting Logs &nbsp;·&nbsp; © 2025 &nbsp;·&nbsp; All rights reserved &nbsp;·&nbsp; <em>Private &amp; Confidential</em>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  function toggleCard(header) {
+    const card = header.closest('.meeting-card');
+    const isOpen = card.classList.contains('open');
+    card.classList.toggle('open', !isOpen);
+    header.setAttribute('aria-expanded', String(!isOpen));
+  }
+
+  // keyboard support
+  document.querySelectorAll('.meeting-card__header').forEach(h => {
+    h.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleCard(h); } });
+  });
+
+  function filterMeetings(type, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    let visible = 0;
+    document.querySelectorAll('.meeting-card').forEach(card => {
+      const match = type === 'all' || card.dataset.type === type;
+      card.classList.toggle('hidden', !match);
+      if(match) visible++;
+    });
+    const total = document.querySelectorAll('.meeting-card').length;
+    document.getElementById('resultCount').textContent = 'Showing ' + visible + ' of ' + total;
+    document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+  }
+</script>
+</body>
+</html>
